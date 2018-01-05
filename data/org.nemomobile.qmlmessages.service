@@ -1,4 +1,4 @@
 [D-BUS Service]
 Name=org.nemomobile.qmlmessages
-Exec=/usr/bin/invoker --no-wait -d 10 --type=qtcomponents-qt5 /usr/bin/qmlmessages -prestart
+Exec=/usr/bin/glacier-messages -prestart
 

@@ -2,7 +2,7 @@
 Type=Application
 Name=Messages
 Icon=icon-app-conversation
-Exec=invoker --type=qtcomponents-qt5 /usr/bin/qmlmessages
+Exec=/usr/bin/glacier-messages
 Comment=Nemo messaging application
 X-Desktop-File-Install-Version=0.19
 X-Maemo-Service=org.nemomobile.qmlmessages

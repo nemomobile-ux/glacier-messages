@@ -1,4 +1,5 @@
-/* Copyright (C) 2012 John Brooks <john.brooks@dereferenced.net>
+/* Copyright (C) 2018 Chupligin Sergey <neochapay@gmail.com>
+ * Copyright (C) 2012 John Brooks <john.brooks@dereferenced.net>
  * Copyright (C) 2011 Robin Burchell <robin+nemo@viroteck.net>
  *
  * You may use this file under the terms of the BSD license as follows:
@@ -29,8 +30,12 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import QtQuick 2.0
-import com.nokia.meego 2.0
+import QtQuick 2.6
+
+import QtQuick.Controls 1.0
+import QtQuick.Controls.Nemo 1.0
+import QtQuick.Controls.Styles.Nemo 1.0
+
 import org.nemomobile.messages.internal 1.0
 import org.nemomobile.qmlcontacts 1.0
 import org.nemomobile.commhistory 1.0
@@ -45,54 +50,11 @@ Page {
     property QtObject channel: null
     property QtObject group
     property QtObject person: group ? peopleModel.personById(group.contactId) : null
-    tools: null
 
-    PageHeader {
-        id: header
-        color: "#bcbcbc"
-        z: 1
-
-        Rectangle {
-            anchors.bottom: header.bottom
-            anchors.left: header.left
-            anchors.right: header.right
-            height: 2
-            color: "#a0a0a0"
-        }
-
-        ToolIcon {
-            id: backBtn
-            anchors.verticalCenter: parent.verticalCenter
-            iconId: "icon-m-toolbar-back"
-            onClicked: pageStack.pop()
-        }
-
-        Text {
-            id: label
-            anchors {
-                left: backBtn.right; right: avatar.left; top: parent.top; bottom: parent.bottom
-                leftMargin: 10; rightMargin: 10;
-            }
-            horizontalAlignment: Qt.AlignHCenter
-            verticalAlignment:  Qt.AlignVCenter
-
-            elide: Text.ElideRight
-            smooth: true
-            color: "#111111"
-            style: Text.Raised
-            styleColor: "white"
-            font.pixelSize: 30
-
-            text: person ? person.displayLabel : (group ? group.remoteUids[0] : "")
-        }
-
-        ContactAvatarImage {
-            id: avatar
-            contact: person
-            anchors.right: parent.right
-            anchors.rightMargin: 10
-            anchors.verticalCenter: parent.verticalCenter
-        }
+    headerTools:  HeaderToolsLayout {
+        id: hTools
+        title: person ? person.displayLabel : (group ? group.remoteUids[0] : "")
+        showBackButton: true;
     }
 
     // For the new conversation state
@@ -127,9 +89,12 @@ Page {
         anchors {
             top: header.bottom
             bottom: textArea.top
-            left: parent.left; right: parent.right
-            topMargin: 10; bottomMargin: 10
-            leftMargin: 5; rightMargin: 5
+            left: parent.left;
+            right: parent.right
+            topMargin: 10;
+            bottomMargin: 10
+            leftMargin: 5;
+            rightMargin: 5
         }
 
         model: conversationModel
@@ -139,13 +104,16 @@ Page {
             useBackgroundThread: true
             groupId: group ? group.id : -1
         }
+
+        Component.onCompleted: {
+            console.log(conversationModel.count)
+        }
     }
 
     ChatTextInput {
         id: textArea
         anchors.bottom: parent.bottom
-        anchors.left: parent.left
-        anchors.right: parent.right
+        width: parent.width
 
         onSendMessage: {
             if (text.length < 1)

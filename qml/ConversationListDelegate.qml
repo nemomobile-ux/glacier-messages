@@ -1,4 +1,5 @@
-/* Copyright (C) 2012 John Brooks <john.brooks@dereferenced.net>
+/* Copyright (C) 2018 Chupligin Serhey <neochapay@gmail.com>
+ * Copyright (C) 2012 John Brooks <john.brooks@dereferenced.net>
  * Copyright (C) 2011 Robin Burchell <robin+nemo@viroteck.net>
  *
  * You may use this file under the terms of the BSD license as follows:
@@ -29,19 +30,22 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import QtQuick 2.0
-import com.nokia.meego 2.0
+import QtQuick 2.6
+
+import QtQuick.Controls 1.0
+import QtQuick.Controls.Nemo 1.0
+import QtQuick.Controls.Styles.Nemo 1.0
+
 import org.nemomobile.qmlcontacts 1.0
 
-MouseArea {
+ListViewItemWithActions {
     id: root
+    icon: getAvatar()
+    showNext: true
+    label: person ? person.displayLabel : model.remoteUids[0]
+    description: model.lastMessageText
 
-    height: UiConstants.ListItemHeightDefault
-    anchors.left: parent.left
-    anchors.right: parent.right
-    anchors.leftMargin: UiConstants.DefaultMargin
-    anchors.rightMargin: UiConstants.DefaultMargin
-    opacity: pressed ? 0.7 : 1.0
+    clip: true
 
     property QtObject person: null
     property int contactId: model.contactIds.length > 0 ? model.contactIds[0] : -1
@@ -59,58 +63,25 @@ MouseArea {
         person = peopleModel.personById(model.contactIds[0])
     }
 
-    ContactAvatarImage {
-        id: photo
-        contact: person
+    Label {
+        id: messageDate
+        // XXX This should be something more natural/useful
+        text: Qt.formatDateTime(model.lastModified, "M/d")
+        anchors.left: parent.right
         anchors.verticalCenter: parent.verticalCenter
     }
 
-    Column {
-        anchors {
-            left: photo.right
-            leftMargin: photo.height/4
-            right: parent.right
-            verticalCenter: parent.verticalCenter
+    function getAvatar() {
+        var av_source;
+        if (model.person == null || model.person.avatarPath == "image://theme/user" || model.person.avatarPath == "image://theme/icon-m-telephony-contact-avatar")
+        {
+            av_source = "image://theme/user"
         }
-
-        Label {
-            id: nameFirst
-            width: parent.width - messageDate.paintedWidth
-            height: paintedHeight
-            elide: Text.ElideRight
-            text: person ? person.displayLabel : model.remoteUids[0]
-
-            platformStyle: LabelStyle {
-                fontPixelSize: 30
-            }
-
-            Label {
-                id: messageDate
-                // XXX This should be something more natural/useful
-                text: Qt.formatDateTime(model.lastModified, "M/d")
-                anchors.left: parent.right
-                anchors.verticalCenter: parent.verticalCenter
-
-                platformStyle: LabelStyle {
-                    fontPixelSize: 22
-                    textColor: "#303030"
-                }
-            }
+        else
+        {
+            av_source = model.person.avatarPath
         }
-
-        Label {
-            id: messagePreview
-            text: model.lastMessageText
-            elide: Text.ElideRight
-            width: parent.width
-            textFormat: Text.PlainText
-            maximumLineCount: 1
-
-            platformStyle: LabelStyle {
-                fontPixelSize: 20
-                textColor: "#4b4b4b"
-            }
-        }
+        return av_source;
     }
 }
 

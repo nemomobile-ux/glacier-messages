@@ -1,4 +1,5 @@
-/* Copyright (C) 2012 John Brooks <john.brooks@dereferenced.net>
+/* Copyright (C) 2018 Chupligin Sergey <neochapay@gmail.com>
+ * Copyright (C) 2012 John Brooks <john.brooks@dereferenced.net>
  * Copyright (C) 2011 Robin Burchell <robin+nemo@viroteck.net>
  *
  * You may use this file under the terms of the BSD license as follows:
@@ -29,15 +30,20 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import QtQuick 2.0
-import com.nokia.meego 2.0
+import QtQuick 2.6
+
+import QtQuick.Controls 1.0
+import QtQuick.Controls.Nemo 1.0
+import QtQuick.Controls.Styles.Nemo 1.0
+
 import org.nemomobile.messages.internal 1.0
 import org.nemomobile.contacts 1.0
 import org.nemomobile.commhistory 1.0
+
 import "common"
 
-PageStackWindow {
-    id: window 
+ApplicationWindow {
+    id: app
 
     // Shared AccountsModel
     TelepathyAccountsModel {
@@ -50,7 +56,7 @@ PageStackWindow {
 
     TelepathyChannelManager {
         id: channelManager
-        handlerName: "qmlmessages"
+        handlerName: "glacier-messages"
     }
 
     CommGroupManager {
@@ -65,9 +71,9 @@ PageStackWindow {
     CommHistoryService {
         id: commHistory
 
-        inboxObserved: !screen.minimized && pageStack.depth === 1
+        inboxObserved: !app.minimized && pageStack.depth === 1
         observedGroups: {
-            if (screen.minimized)
+            if (app.minimized)
                 return [ ]
 
             var c = [ ]
@@ -81,7 +87,8 @@ PageStackWindow {
         }
     }
 
-    function showConversation(localUid, remoteUid) {
+    function showConversation(localUid, remoteUid)
+    {
         if (!groupManager.ready) {
             function delayedShow() {
                 if (groupManager.ready) {
@@ -108,11 +115,16 @@ PageStackWindow {
             pageStack.push(pages)
     }
 
-    function showGroupsList() {
+    function showGroupsList()
+    {
         if (!pageStack.currentPage)
             pageStack.push(Qt.resolvedUrl("ConversationListPage.qml"))
         else if (pageStack.depth > 1)
             pageStack.pop(null, true)
+    }
+
+    Component.onCompleted: {
+        showGroupsList()
     }
 }
 

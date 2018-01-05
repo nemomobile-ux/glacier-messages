@@ -1,4 +1,5 @@
-/* Copyright (C) 2012 John Brooks <john.brooks@dereferenced.net>
+/* Copyright (C) 2018 Chupligin Sergey <neochapay@gmail.com>
+ * Copyright (C) 2012 John Brooks <john.brooks@dereferenced.net>
  *
  * You may use this file under the terms of the BSD license as follows:
  *
@@ -28,8 +29,12 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import QtQuick 2.0
-import com.nokia.meego 2.0
+import QtQuick 2.6
+
+import QtQuick.Controls 1.0
+import QtQuick.Controls.Nemo 1.0
+import QtQuick.Controls.Styles.Nemo 1.0
+
 import org.nemomobile.messages.internal 1.0
 import org.nemomobile.commhistory 1.0
 
@@ -58,12 +63,6 @@ Item {
             onModelReset: view.positionViewAtBeginning()
         }
 
-        // Cannot use Label, because it shadows the 'style' property.
-        // Copy its text formatting instead.
-        LabelStyle {
-            id: labelStyle
-        }
-
         delegate: BorderImage {
             id: messageBox
             x: model.direction == CommHistory.Outbound ? parent.width - width : 0
@@ -80,35 +79,28 @@ Item {
             // This should use meegotouch's speechbubble theme elements, but those SVG group
             // images are not supported in qt-components currently. incoming.svg and outgoing.svg
             // are extracted from the group SVG in meegotouch's base theme and included here.
-            source: model.direction == CommHistory.Inbound ? "qrc:/images/incoming.svg" : "qrc:/images/outgoing.svg"
+            source: model.direction == CommHistory.Inbound ? "/usr/share/glacier-messages/images/incoming.svg"
+                                                           : "/usr/share/glacier-messages/images/outgoing.svg"
 
             property int status: model.status
 
             Text {
                 id: messageText
-                x: model.direction == CommHistory.Outbound ? 20 : 10
-                y: 10
+                x: 10
+                y: model.direction == CommHistory.Outbound ? 20 : 10
                 text: model.freeText
                 width: messageBox.parent.width * 0.7
                 height: paintedHeight
                 wrapMode: Text.Wrap
-                style: Text.Raised
-                styleColor: "#eeeeee"
-                font.family: labelStyle.fontFamily
-                font.pixelSize: labelStyle.fontPixelSize
+                color: Theme.textColor
+                font.family: Theme.fontFamily
+                font.pixelSize: Theme.fontSizeMedium
             }
         }
-    }
 
-    ScrollDecorator {
-        flickableItem: view
-
-        // The rotated view hack screws up ScrollDecorator. This is a (also very bad) workaround.
-        anchors.fill: undefined
-        anchors.right: view.right
-        anchors.rightMargin: view.width - childrenRect.width - 4 - (__hasPageWidth ? __rightPageMargin : 0)
-        anchors.top: view.top
-        anchors.bottom: view.bottom
+        ScrollDecorator {
+            flickable: view
+        }
     }
 }
 

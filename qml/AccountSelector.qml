@@ -28,16 +28,20 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import QtQuick 2.0
-import com.nokia.meego 2.0
+import QtQuick 2.6
+
+import QtQuick.Controls 1.0
+import QtQuick.Controls.Nemo 1.0
+import QtQuick.Controls.Styles.Nemo 1.0
+
 import org.nemomobile.messages.internal 1.0
 
 Rectangle {
     id: selector
     color: "white"
 
-    property alias model: dialog.model
-    property alias selectedIndex: dialog.selectedIndex
+    //property alias model: dialog.model
+    //property alias selectedIndex: dialog.selectedIndex
     property string selectedUid: ""
 
     Button {
@@ -47,13 +51,13 @@ Rectangle {
         text: "No accounts"
         iconSource: "image://theme/icon-m-toolbar-send-chat"
 
-        onClicked: dialog.open()
+        //onClicked: dialog.open()
     }
 
-    SelectionDialog {
+    /*SelectionDialog {
         id: dialog
         titleText: qsTr("Account")
-    }
+    }*/
 
     Rectangle {
         anchors.bottom: parent.bottom
@@ -63,7 +67,7 @@ Rectangle {
         color: "#e8e8e8"
     }
 
-    states: State {
+    /*states: State {
         name: "active"
         when: dialog.model !== undefined && dialog.model.count > 0
 
@@ -81,6 +85,6 @@ Rectangle {
             target: selector
             selectedUid: dialog.model.get(dialog.selectedIndex, TelepathyAccountsModel.AccountUidRole)
         }
-    }
+    }*/
 }
 

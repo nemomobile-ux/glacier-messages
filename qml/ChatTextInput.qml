@@ -1,4 +1,5 @@
-/* Copyright (C) 2012 John Brooks <john.brooks@dereferenced.net>
+/* Copyright (C) 2018 Chupligin Sergey <neochapay@gmail.com>
+ * Copyright (C) 2012 John Brooks <john.brooks@dereferenced.net>
  * Copyright (C) 2011 Robin Burchell <robin+nemo@viroteck.net>
  *
  * You may use this file under the terms of the BSD license as follows:
@@ -29,14 +30,18 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import QtQuick 2.0
-import com.nokia.meego 2.0
+import QtQuick 2.6
 
-BorderImage {
+import QtQuick.Controls 1.0
+import QtQuick.Controls.Nemo 1.0
+import QtQuick.Controls.Styles.Nemo 1.0
+
+import QtQuick.Controls.Styles 1.4
+
+Item {
     id: textArea
-    height: textInput.height + (8*2)
-    source: "image://theme/meegotouch-toolbar-portrait-background"
-    border { left: 10; right: 10; top: 10; bottom: 10 }
+    width: parent.width
+    height: Theme.itemHeightLarge*2
 
     property alias text: textInput.text
 
@@ -49,21 +54,47 @@ BorderImage {
     /* See comment on InverseMouseArea */
     FocusScope {
         id: inputFocusScope
-        anchors.left: parent.left
-        anchors.leftMargin: UiConstants.ButtonSpacing
-        anchors.right: sendBtn.left
-        anchors.rightMargin: UiConstants.ButtonSpacing
+        height: Theme.itemHeightLarge
+        width: parent.width-Theme.itemSpacingSmall*2
+        anchors{
+            top: parent.top
+            left: parent.left
+            leftMargin: Theme.itemSpacingSmall
+        }
         y: 8
 
         TextArea {
             id: textInput
-            anchors.left: parent.left
-            anchors.right: parent.right
-            height: 52 /* UI.DEFAULT_FIELD.HEIGHT */
 
-            placeholderText: qsTr("Type a message")
+            height: parent.height
+            width: parent.width
+
             wrapMode: TextEdit.Wrap
             textFormat: TextEdit.PlainText
+
+            Rectangle{
+                width: parent.width
+                height: 1
+                color: Theme.accentColor
+                anchors{
+                    bottom: parent.bottom
+                }
+            }
+
+            Label{
+                text: qsTr("Type a message")
+                visible: !textInput.focus || textInput.text != ""
+            }
+
+            style: TextAreaStyle {
+                backgroundColor: Theme.fillDarkColor
+                font.pixelSize: Theme.fontSizeMedium
+                font.family: Theme.fontFamily
+                textColor: Theme.textColor
+                selectedTextColor: Theme.textColor
+                selectionColor: Theme.accentColor
+            }
+
         }
     }
 
@@ -76,7 +107,7 @@ BorderImage {
         enabled: inputContext.softwareInputPanelVisible
         z: 100
 
-        onClickedOutside: {
+        onPressed: {
             textArea.focus = true
             textInput.platformCloseSoftwareInputPanel();
         }
@@ -84,21 +115,15 @@ BorderImage {
 
     Button {
         id: sendBtn
-        anchors.right: parent.right
-        anchors.rightMargin: UiConstants.ButtonSpacing
-        anchors.bottom: parent.bottom
-        anchors.bottomMargin: 8
+        anchors{
+            right: parent.right
+            rightMargin: Theme.itemSpacingSmall
+            top: inputFocusScope.bottom
+            topMargin: Theme.itemSpacingSmall
+        }
 
         text: qsTr("Send")
         enabled: textInput.text.length > 0
-
-        platformStyle: ButtonStyle {
-            buttonWidth: 100
-            background: "image://theme/meegotouch-button-inverted-background"
-            disabledBackground: background
-            textColor: "white"
-            disabledTextColor: "lightgray"
-        }
 
         onClicked: sendMessage(text)
     }

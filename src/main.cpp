@@ -1,4 +1,5 @@
-/* Copyright (C) 2012 John Brooks <john.brooks@dereferenced.net>
+/* Copyright (C) 2018 Chupligin Sergey <neochapay@gmail.com>
+ * Copyright (C) 2012 John Brooks <john.brooks@dereferenced.net>
  * Copyright (C) 2011 Robin Burchell <robin+mer@viroteck.net>
  *
  * You may use this file under the terms of the BSD license as follows:
@@ -29,55 +30,24 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+#ifdef QT_QML_DEBUG
+#include <QtQuick>
+#endif
+
 #include <QGuiApplication>
-#include <QDBusConnection>
-#ifdef HAS_BOOSTER
-#include <MDeclarativeCache>
-#endif
-
 #include <QQuickView>
-#include <QQmlEngine>
-#include <QQmlContext>
+#include <QtQml>
 
-#include "windowmanager.h"
+#include <glacierapp.h>
 
-#ifdef HAS_BOOSTER
-Q_DECL_EXPORT
-#endif
 int main(int argc, char **argv)
 {
-    QQuickView *view;
-#ifdef HAS_BOOSTER 
-    QGuiApplication *application;
-    application = MDeclarativeCache::qApplication(argc, argv);
-    view = MDeclarativeCache::qQuickView();
-#else
-    QGuiApplication *application;
-    qWarning() << Q_FUNC_INFO << "Warning! Running without booster. This may be a bit slower.";
-    QGuiApplication stackApp(argc, argv);
-    QQuickView stackView;
-    application = &stackApp;
-    view = &stackView;
-#endif
+    QGuiApplication *app = GlacierApp::app(argc, argv);
+    app->setOrganizationName("NemoMobile");
 
-    bool showWindow = true;
-    foreach (QString arg, qApp->arguments()) {
-        if (arg == "-background")
-            showWindow = false;
-        else if (arg == "-prestart")
-            showWindow = false;
-    }
+    QQuickWindow *window = GlacierApp::showWindow();
+    window->setTitle(QObject::tr("Messages"));
+    window->showFullScreen();
 
-    QObject::connect(view->engine(), SIGNAL(quit()), application, SLOT(quit()));
-    view->setSource(QUrl("qrc:/qml/main.qml"));
-
-    QObject *object = (QObject *)view->rootObject();
-    WindowManager *wm = WindowManager::instance( object, view );
-    view->rootContext()->setContextProperty("wManager", wm);    
-    if (showWindow)
-    {
-        wm->showGroupsWindow();
-    }
-
-    return application->exec();
+    return app->exec();
 }

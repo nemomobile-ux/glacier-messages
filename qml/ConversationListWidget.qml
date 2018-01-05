@@ -1,4 +1,5 @@
-/* Copyright (C) 2012 John Brooks <john.brooks@dereferenced.net>
+/* Copyright (C) 2018 Chupligin Serhey <neochapay@gmail.com>
+ * Copyright (C) 2012 John Brooks <john.brooks@dereferenced.net>
  * Copyright (C) 2011 Robin Burchell <robin+nemo@viroteck.net>
  *
  * You may use this file under the terms of the BSD license as follows:
@@ -29,14 +30,19 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import QtQuick 2.0
-import com.nokia.meego 2.0
+import QtQuick 2.6
+
+import QtQuick.Controls 1.0
+import QtQuick.Controls.Nemo 1.0
+import QtQuick.Controls.Styles.Nemo 1.0
+
 import org.nemomobile.messages.internal 1.0
 
 Item {
-    ViewPlaceholder {
-        enabled: cardListView.count == 0
-        text: "No messages yet"
+    Label{
+        visible: cardListView.count == 0
+        text: qsTr("No messages yet")
+        anchors.centerIn: parent
     }
 
     ListView {
@@ -55,6 +61,10 @@ Item {
                 var channel = channelManager.getConversation(group.localUid, group.remoteUids[0])
                 pageStack.push(Qt.resolvedUrl("ConversationPage.qml"), { "channel": channel, "group": group })
             }
+        }
+
+        ScrollDecorator{
+            flickable: cardListView
         }
     }
 }
