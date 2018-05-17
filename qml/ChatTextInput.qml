@@ -83,7 +83,7 @@ Item {
 
             Label{
                 text: qsTr("Type a message")
-                visible: !textInput.focus || textInput.text != ""
+                visible: (!textInput.focus && !inputFocusScope.focus) || textInput.text.lenght == 0
             }
 
             style: TextAreaStyle {
@@ -94,7 +94,6 @@ Item {
                 selectedTextColor: Theme.textColor
                 selectionColor: Theme.accentColor
             }
-
         }
     }
 
@@ -104,12 +103,10 @@ Item {
      * (making that no-op), and implement the correct behavior here. */
     InverseMouseArea {
         anchors.fill: parent
-        enabled: inputContext.softwareInputPanelVisible
         z: 100
 
         onPressed: {
             textArea.focus = true
-            textInput.platformCloseSoftwareInputPanel();
         }
     }
 
