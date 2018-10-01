@@ -1,5 +1,5 @@
 import QtQuick 2.6
-import org.nemomobile.dbus 1.0
+import org.nemomobile.dbus 2.0
 
 DBusInterface {
     id: service

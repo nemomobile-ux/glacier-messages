@@ -62,7 +62,7 @@ Page {
         id: accountSelector
         anchors.left: parent.left
         anchors.right: parent.right
-        anchors.top: header.bottom
+        anchors.top: parent.top
         height: targetEditor.height
 
         visible: false
