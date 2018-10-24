@@ -23,7 +23,6 @@ LIBS += -lglacierapp
 DISTFILES += \
     rpm/glacier-messages.spec \
     qml/common/CommHistoryService.qml \
-    qml/AccountSelector.qml \
     qml/ChatTextInput.qml \
     qml/ConversationListDelegate.qml \
     qml/ConversationListPage.qml \
@@ -39,7 +38,12 @@ DISTFILES += \
     qml/glacier-messages.qml \
     res/outgoing.svg \
     res/meegotouch-speechbubble.svg \
-    res/incoming.svg
+    res/incoming.svg \
+    res/glacier-messages.png
+
+icon.files = res/glacier-messages.png
+icon.path = /usr/share/$${PROJECT_NAME}
+INSTALLS += icon
 
 images.path = /usr/share/$${PROJECT_NAME}/images
 images.files = res/*.svg

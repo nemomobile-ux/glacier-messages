@@ -35,8 +35,8 @@ import QtQuick.Controls 1.0
 import QtQuick.Controls.Nemo 1.0
 import QtQuick.Controls.Styles.Nemo 1.0
 
-Rectangle {
-    color: "white"
+Item {
+    id: targetEdirBox
     height: targetInput.height + 22
 
     property alias text: targetInput.text
@@ -45,22 +45,33 @@ Rectangle {
         id: targetInput
         placeholderText: "To:"
         focus: true
-        anchors.left: parent.left
-        anchors.right: contactsBtn.left
-        anchors.margins: 10
-        y: 10
+        anchors{
+            left: parent.left
+            margins: 10
+        }
+        width: targetEdirBox.width-addNewButton.width-targetEdirBox.height*0.2
     }
     
-    Button {
-        id: contactsBtn
-        anchors.top: targetInput.top
-        anchors.bottom: targetInput.bottom
-        anchors.right: parent.right
-        anchors.rightMargin: 10
+    Image{
+        id: addNewButton
+        width: targetEdirBox.height*0.8
+        height: width
 
-        text: qsTr("+")
+        source: "image://theme/plus-circle"
 
-        onClicked: console.log("Open contacts browsing dialog here")
+        anchors{
+            top: targetEdirBox.top
+            topMargin: targetEdirBox.height*0.1
+            right: targetEdirBox.right
+            rightMargin: targetEdirBox.height*0.1
+        }
+
+        MouseArea{
+            anchors.fill: parent
+            onClicked: {
+                console.log("Open select contacts dialog")
+            }
+        }
     }
 
     Rectangle {

@@ -1,7 +1,7 @@
 [Desktop Entry]
 Type=Application
 Name=Messages
-Icon=icon-app-conversation
+Icon=/usr/share/glacier-messages/glacier-messages.png
 Exec=/usr/bin/glacier-messages
 Comment=Nemo messaging application
 X-Desktop-File-Install-Version=0.19

@@ -57,37 +57,25 @@ Page {
         showBackButton: true;
     }
 
-    // For the new conversation state
-    AccountSelector {
-        id: accountSelector
-        anchors.left: parent.left
-        anchors.right: parent.right
-        anchors.top: parent.top
-        height: targetEditor.height
-
-        visible: false
-    }
-
     TargetEditBox {
         id: targetEditor
-        anchors.top: accountSelector.bottom
+        anchors.top: parent.bottom
         anchors.left: parent.left
         anchors.right: parent.right
         visible: false
 
         function startConversation() {
-            if (targetEditor.text.length < 1 || accountSelector.model == undefined
-                || accountSelector.selectedIndex < 0)
+            if (targetEditor.text.length < 1)
                 return
-            console.log("startConversation", accountSelector.selectedUid, targetEditor.text);
-            channel = channelManager.getConversation(accountSelector.selectedUid, targetEditor.text.toLowerCase())
+            console.log("startConversation", targetEditor.text);
+            channel = channelManager.getConversation(channel,targetEditor.text.toLowerCase())
         }
     }
 
     MessagesView {
         id: messagesView
         anchors {
-            top: header.bottom
+            top: targetEditor.visible ? targetEditor.bottom :  parent.top
             bottom: textArea.top
             left: parent.left;
             right: parent.right
@@ -106,7 +94,7 @@ Page {
         }
 
         Component.onCompleted: {
-            console.log(conversationModel.count)
+            console.log("Message count",conversationModel.count)
         }
     }
 
@@ -140,12 +128,6 @@ Page {
             PropertyChanges {
                 target: avatar
                 visible: false
-            }
-
-            PropertyChanges {
-                target: accountSelector
-                visible: true
-                model: accountsModel
             }
 
             AnchorChanges {

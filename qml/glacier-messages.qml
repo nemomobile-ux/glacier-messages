@@ -56,7 +56,7 @@ ApplicationWindow {
 
     TelepathyChannelManager {
         id: channelManager
-        handlerName: "glacier-messages"
+        handlerName: "qmlmessages"
     }
 
     CommGroupManager {

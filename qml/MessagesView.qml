@@ -49,6 +49,7 @@ Item {
         id: view
         spacing: 20
         anchors.fill: parent
+
         cacheBuffer: parent.height
 
         // Necessary when opening VKB, for example
@@ -63,39 +64,64 @@ Item {
             onModelReset: view.positionViewAtBeginning()
         }
 
-        delegate: BorderImage {
-            id: messageBox
-            x: model.direction == CommHistory.Outbound ? parent.width - width : 0
-            height: childrenRect.height + 20
-            width: messageText.paintedWidth + 30
-            cache: true
-            // Fix rotation from the view hack...
-            rotation: 180
-            border.left: 24
-            border.right: 24
-            border.top: 24
-            border.bottom: 24
+        delegate: Item{
+            id: messageLine
+            width: view.width
+            height: childrenRect.height
 
-            // This should use meegotouch's speechbubble theme elements, but those SVG group
-            // images are not supported in qt-components currently. incoming.svg and outgoing.svg
-            // are extracted from the group SVG in meegotouch's base theme and included here.
-            source: model.direction == CommHistory.Inbound ? "/usr/share/glacier-messages/images/incoming.svg"
-                                                           : "/usr/share/glacier-messages/images/outgoing.svg"
+            Rectangle{
+                height: childrenRect.height + Theme.itemSpacingSmall*2
+                width: messageText.paintedWidth + Theme.itemSpacingSmall*2
 
-            property int status: model.status
+                color: model.direction == CommHistory.Outbound ? Theme.fillColor : Theme.accentColor
 
-            Text {
-                id: messageText
-                x: 10
-                y: model.direction == CommHistory.Outbound ? 20 : 10
-                text: model.freeText
-                width: messageBox.parent.width * 0.7
-                height: paintedHeight
-                wrapMode: Text.Wrap
-                color: Theme.textColor
-                font.family: Theme.fontFamily
-                font.pixelSize: Theme.fontSizeMedium
+                rotation: 180
+
+                anchors{
+                    left: model.direction == CommHistory.Outbound ? undefined : parent.left
+                    right: model.direction == CommHistory.Outbound ? parent.right : undefined
+                }
+
+                Text {
+                    id: messageText
+                    text: model.freeText
+                    height: paintedHeight
+                    wrapMode: Text.Wrap
+                    color: Theme.textColor
+                    font.family: Theme.fontFamily
+                    font.pixelSize: Theme.fontSizeMedium
+                    anchors{
+                        centerIn: parent
+                        margins: Theme.itemSpacingSmall
+                    }
+                }
             }
+
+            /*BorderImage {
+                id: messageBox
+
+                height: childrenRect.height + 20
+                width: messageText.paintedWidth + 30
+                cache: true
+                // Fix rotation from the view hack...
+                rotation: 180
+                border.left: 24
+                border.right: 24
+                border.top: 24
+                border.bottom: 24
+
+                anchors.left: messageLine.left
+
+                // This should use meegotouch's speechbubble theme elements, but those SVG group
+                // images are not supported in qt-components currently. incoming.svg and outgoing.svg
+                // are extracted from the group SVG in meegotouch's base theme and included here.
+                source: model.direction == CommHistory.Inbound ? "/usr/share/glacier-messages/images/incoming.svg"
+                                                               : "/usr/share/glacier-messages/images/outgoing.svg"
+
+                property int status: model.status
+
+
+            }*/
         }
 
         ScrollDecorator {

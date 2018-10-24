@@ -3,7 +3,7 @@ import org.nemomobile.dbus 2.0
 
 DBusInterface {
     id: service
-    destination: "org.nemomobile.CommHistory"
+    service: "org.nemomobile.CommHistory"
     path: "/org/nemomobile/CommHistory"
     iface: "org.nemomobile.CommHistoryIf"
 
