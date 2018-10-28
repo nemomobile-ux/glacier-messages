@@ -39,6 +39,7 @@ import QtQuick.Controls.Styles.Nemo 1.0
 import org.nemomobile.messages.internal 1.0
 import org.nemomobile.qmlcontacts 1.0
 import org.nemomobile.commhistory 1.0
+import org.nemomobile.voicecall 1.0
 
 /* ConversationPage has two states, depending on if it has an active
  * conversation or not. This is determined by whether the channel property
@@ -55,7 +56,20 @@ Page {
         id: hTools
         title: person ? person.displayLabel : (group ? group.remoteUids[0] : "")
         showBackButton: true;
+
+        tools: [
+            ToolButton {
+                id: callButton
+                iconSource: "image://theme/phone"
+                onClicked: {
+                    callManager.dial(callManager.defaultProviderId, group.remoteUids[0])
+                }
+            }
+
+        ]
     }
+
+    VoiceCallManager {id:callManager}
 
     TargetEditBox {
         id: targetEditor

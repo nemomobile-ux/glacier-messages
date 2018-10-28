@@ -16,6 +16,7 @@ Requires:   qt5-qtsvg-plugin-imageformat-svg
 Requires:   nemo-qml-plugin-contacts-qt5
 Requires:   nemo-qml-plugin-dbus-qt5
 Requires:   glacier-contacts
+Requires:   voicecall-qt5
 BuildRequires:  pkgconfig(Qt5Gui)
 BuildRequires:  pkgconfig(Qt5Quick)
 BuildRequires:  pkgconfig(Qt5Core)
