@@ -23,6 +23,7 @@ BuildRequires:  pkgconfig(Qt5Core)
 BuildRequires:  pkgconfig(Qt5Contacts)
 BuildRequires:  pkgconfig(Qt5DBus)
 BuildRequires:  pkgconfig(qdeclarative5-boostable)
+BuildRequires:  pkgconfig(glacierapp)
 BuildRequires:  desktop-file-utils
 Provides:   meego-handset-sms > 0.1.2
 Provides:   meego-handset-sms-branding-upstream > 0.1.2
