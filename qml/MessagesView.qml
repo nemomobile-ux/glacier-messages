@@ -47,10 +47,8 @@ Item {
 
     ListView {
         id: view
-        spacing: 20
+        spacing: Theme.itemSpacingSmall
         anchors.fill: parent
-
-        cacheBuffer: parent.height
 
         // Necessary when opening VKB, for example
         onHeightChanged: view.positionViewAtBeginning()
@@ -66,11 +64,21 @@ Item {
 
         delegate: Item{
             id: messageLine
-            width: view.width
+            width: view.width*0.8+Theme.itemSpacingSmall*2
             height: childrenRect.height
 
+            clip: true
+
+            anchors{
+                left: model.direction == CommHistory.Outbound ? undefined : parent.left
+                leftMargin: Theme.itemSpacingSmall
+                right: model.direction == CommHistory.Outbound ? parent.right : undefined
+                rightMargin: Theme.itemSpacingSmall
+            }
+
             Rectangle{
-                height: childrenRect.height + Theme.itemSpacingSmall*2
+                id: messageBaloon
+                height: messageText.paintedHeight + Theme.itemSpacingSmall*2
                 width: messageText.paintedWidth + Theme.itemSpacingSmall*2
 
                 color: model.direction == CommHistory.Outbound ? Theme.fillColor : Theme.accentColor
@@ -91,37 +99,19 @@ Item {
                     font.family: Theme.fontFamily
                     font.pixelSize: Theme.fontSizeMedium
                     anchors{
-                        centerIn: parent
-                        margins: Theme.itemSpacingSmall
+                        left: messageBaloon.left
+                        leftMargin: Theme.itemSpacingSmall
+                        top: messageBaloon.top
+                        topMargin: Theme.itemSpacingSmall
+                    }
+
+                    Component.onCompleted: {
+                        if(messageText.paintedWidth > messageLine.width) {
+                            messageText.width = messageLine.width
+                        }
                     }
                 }
             }
-
-            /*BorderImage {
-                id: messageBox
-
-                height: childrenRect.height + 20
-                width: messageText.paintedWidth + 30
-                cache: true
-                // Fix rotation from the view hack...
-                rotation: 180
-                border.left: 24
-                border.right: 24
-                border.top: 24
-                border.bottom: 24
-
-                anchors.left: messageLine.left
-
-                // This should use meegotouch's speechbubble theme elements, but those SVG group
-                // images are not supported in qt-components currently. incoming.svg and outgoing.svg
-                // are extracted from the group SVG in meegotouch's base theme and included here.
-                source: model.direction == CommHistory.Inbound ? "/usr/share/glacier-messages/images/incoming.svg"
-                                                               : "/usr/share/glacier-messages/images/outgoing.svg"
-
-                property int status: model.status
-
-
-            }*/
         }
 
         ScrollDecorator {
