@@ -59,6 +59,11 @@ desktop-file-install --delete-original       \
   --dir %{buildroot}%{_datadir}/applications             \
    %{buildroot}%{_datadir}/applications/*.desktop
 
+#add system icon for messages
+mkdir -p %{buildroot}%{_datadir}/themes/glacier/meegotouch/icons/
+cd %{buildroot}%{_datadir}/themes/glacier/meegotouch/icons/
+ln -s /usr/share/glacier-messages/glacier-messages.png icon-lock-sms.png
+
 %files
 %defattr(-,root,root,-)
 %{_bindir}/glacier-messages
@@ -67,3 +72,4 @@ desktop-file-install --delete-original       \
 %{_datadir}/telepathy/clients/glacier-messages.client
 %{_datadir}/dbus-1/services/org.freedesktop.Telepathy.Client.qmlmessages.service
 %{_datadir}/dbus-1/services/org.nemomobile.qmlmessages.service
+%{_datadir}/themes/glacier/meegotouch/icons/
