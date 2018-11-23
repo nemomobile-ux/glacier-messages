@@ -68,6 +68,14 @@ ApplicationWindow {
         manager: groupManager
     }
 
+    MessagesService{
+        id: messageService
+
+        onStartConversation: {
+            showConversation(localUid,remoteUid)
+        }
+    }
+
     CommHistoryService {
         id: commHistory
 
@@ -89,38 +97,33 @@ ApplicationWindow {
 
     function showConversation(localUid, remoteUid)
     {
-        if (!groupManager.ready) {
-            function delayedShow() {
-                if (groupManager.ready) {
-                    showConversation(localUid, remoteUid)
-                    groupManager.readyChanged.disconnect(delayedShow)
-                }
-            }
-            groupManager.modelReady.connect(delayedShow)
+        var channel = channelManager.getConversation(localUid, remoteUid)
+        var group = groupManager.findGroup(localUid, remoteUid)
+
+        if (!channel) {
             return
         }
 
-        var group = channelManager.getConversation(localUid, remoteUid)
-        if (!group || group == contextProvider.currentConversation)
-            return
+        if (pageStack.depth > 1) {
+            pageStack.clear();
+        }
 
-        var pages = [ ]
-        if (!pageStack.currentPage)
-            pages.push(Qt.resolvedUrl("ConversationListPage.qml"))
-        pages.push({ page: Qt.resolvedUrl("ConversationPage.qml"), properties: { channel: group } })
+        if (!pageStack.currentPage) {
+            pageStack.push(Qt.resolvedUrl("ConversationListPage.qml"))
+        }
 
-        if (pageStack.depth > 1)
-            pageStack.replace(pages)
-        else
-            pageStack.push(pages)
+        pageStack.push(Qt.resolvedUrl("ConversationPage.qml"), { channel: channel, group: group, remoteUid: remoteUid })
+
+        app.raise()
     }
 
     function showGroupsList()
     {
-        if (!pageStack.currentPage)
+        if (!pageStack.currentPage) {
             pageStack.push(Qt.resolvedUrl("ConversationListPage.qml"))
-        else if (pageStack.depth > 1)
+        } else if (pageStack.depth > 1) {
             pageStack.pop(null, true)
+        }
     }
 
     Component.onCompleted: {

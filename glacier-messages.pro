@@ -4,14 +4,8 @@ QT += dbus quick
 target.path = $$INSTALL_ROOT/usr/bin
 INSTALLS += target
 
-SOURCES += src/main.cpp \
-    src/windowmanager.cpp \
-    src/dbusadaptor.cpp
+SOURCES += src/main.cpp
 
-HEADERS += src/windowmanager.h \
-    src/dbusadaptor.h
-
-# do not edit below here
 TEMPLATE = app
 TARGET = $$PROJECT_NAME
 
@@ -23,6 +17,7 @@ LIBS += -lglacierapp
 DISTFILES += \
     rpm/glacier-messages.spec \
     qml/common/CommHistoryService.qml \
+    qml/common/MessagesService.qml \
     qml/ChatTextInput.qml \
     qml/ConversationListDelegate.qml \
     qml/ConversationListPage.qml \

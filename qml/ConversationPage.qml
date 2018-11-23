@@ -51,10 +51,11 @@ Page {
     property QtObject channel: null
     property QtObject group
     property QtObject person: group ? peopleModel.personById(group.contactId) : null
+    property string remoteUid: ""
 
     headerTools:  HeaderToolsLayout {
         id: hTools
-        title: person ? person.displayLabel : (group ? group.remoteUids[0] : "")
+        title: person ? person.displayLabel : (group ? group.remoteUids[0] : remoteUid)
         showBackButton: true;
 
         tools: [

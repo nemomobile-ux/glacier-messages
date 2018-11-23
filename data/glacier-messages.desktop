@@ -2,7 +2,7 @@
 Type=Application
 Name=Messages
 Icon=/usr/share/glacier-messages/glacier-messages.png
-Exec=/usr/bin/glacier-messages
+Exec=/usr/bin/invoker --type=nemomobile -s /usr/bin/glacier-messages
 Comment=Nemo messaging application
 X-Desktop-File-Install-Version=0.19
 X-Maemo-Service=org.nemomobile.qmlmessages

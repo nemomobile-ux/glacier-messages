@@ -59,6 +59,7 @@ Item {
             onClicked: {
                 var group = model.group
                 var channel = channelManager.getConversation(group.localUid, group.remoteUids[0])
+
                 pageStack.push(Qt.resolvedUrl("ConversationPage.qml"), { "channel": channel, "group": group })
             }
         }
