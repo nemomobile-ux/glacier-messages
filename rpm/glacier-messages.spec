@@ -1,5 +1,9 @@
-Name:       glacier-messages
+%{!?qtc_qmake:%define qtc_qmake %qmake}
+%{!?qtc_qmake5:%define qtc_qmake5 %qmake5}
+%{!?qtc_make:%define qtc_make make}
+%{?qtc_builddir:%define _builddir %qtc_builddir}
 
+Name:       glacier-messages
 Summary:    Messaging application for nemo
 Version:    0.2.0
 Release:    1
@@ -47,9 +51,8 @@ Messaging application using Qt Quick for Nemo Mobile.
 %setup -q -n %{name}-%{version}
 
 %build
-%qmake5 
-
-make %{?_smp_mflags}
+%qtc_qmake5
+%qtc_make %{?_smp_mflags}
 
 %install
 rm -rf %{buildroot}

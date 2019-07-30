@@ -41,6 +41,9 @@ import org.nemomobile.qmlcontacts 1.0
 import org.nemomobile.commhistory 1.0
 import org.nemomobile.voicecall 1.0
 
+
+import "../components"
+
 /* ConversationPage has two states, depending on if it has an active
  * conversation or not. This is determined by whether the channel property
  * is set. If unset, this is the new conversation page, and some elements

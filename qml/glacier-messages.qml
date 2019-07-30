@@ -40,7 +40,8 @@ import org.nemomobile.messages.internal 1.0
 import org.nemomobile.contacts 1.0
 import org.nemomobile.commhistory 1.0
 
-import "common"
+import "components"
+import "pages"
 
 ApplicationWindow {
     id: app
@@ -109,10 +110,10 @@ ApplicationWindow {
         }
 
         if (!pageStack.currentPage) {
-            pageStack.push(Qt.resolvedUrl("ConversationListPage.qml"))
+            pageStack.push(Qt.resolvedUrl("pages/ConversationListPage.qml"))
         }
 
-        pageStack.push(Qt.resolvedUrl("ConversationPage.qml"), { channel: channel, group: group, remoteUid: remoteUid })
+        pageStack.push(Qt.resolvedUrl("pages/ConversationPage.qml"), { channel: channel, group: group, remoteUid: remoteUid })
 
         app.raise()
     }
@@ -120,7 +121,7 @@ ApplicationWindow {
     function showGroupsList()
     {
         if (!pageStack.currentPage) {
-            pageStack.push(Qt.resolvedUrl("ConversationListPage.qml"))
+            pageStack.push(Qt.resolvedUrl("pages/ConversationListPage.qml"))
         } else if (pageStack.depth > 1) {
             pageStack.pop(null, true)
         }

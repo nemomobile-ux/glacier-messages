@@ -36,6 +36,8 @@ import QtQuick.Controls 1.0
 import QtQuick.Controls.Nemo 1.0
 import QtQuick.Controls.Styles.Nemo 1.0
 
+import "../components"
+
 Page {
     headerTools:  HeaderToolsLayout {
         id: hTools
