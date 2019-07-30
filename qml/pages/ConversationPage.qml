@@ -65,29 +65,32 @@ Page {
             ToolButton {
                 id: callButton
                 iconSource: "image://theme/phone"
+                visible: group != null
                 onClicked: {
                     callManager.dial(callManager.defaultProviderId, group.remoteUids[0])
                 }
             }
-
         ]
     }
 
     VoiceCallManager {id:callManager}
 
-    TargetEditBox {
+    TextField {
         id: targetEditor
-        anchors.top: parent.bottom
-        anchors.left: parent.left
-        anchors.right: parent.right
-        visible: false
+        visible: !channel
+        width: parent.width-Theme.itemSpacingLarge*2
+        height: Theme.itemHeightExtraLarge-Theme.itemSpacingLarge*2
 
-        function startConversation() {
-            if (targetEditor.text.length < 1)
-                return
-            console.log("startConversation", targetEditor.text);
-            channel = channelManager.getConversation(channel,targetEditor.text.toLowerCase())
+        anchors{
+            top: parent.top
+            topMargin: Theme.itemSpacingLarge
+            left: parent.left
+            leftMargin: Theme.itemSpacingLarge
         }
+
+        inputMethodHints: Qt.ImhNoAutoUppercase
+        placeholderText: qsTr("Phone number")
+
     }
 
     MessagesView {
@@ -122,11 +125,14 @@ Page {
         width: parent.width
 
         onSendMessage: {
-            if (text.length < 1)
+            if (text.length < 1 && (!channel && targetEditor.length < 1)) {
                 return
+            }
 
-            if (conversationPage.state == "new" && targetEditor.text.length > 0)
-                targetEditor.startConversation()
+            if(!channel) {
+                channel = channelManager.getConversation(accountsModel.get(0, TelepathyAccountsModel.AccountUidRole),targetEditor.text)
+                hTools.title = targetEditor.text
+            }
 
             channel.sendMessage(text)
             clear()
@@ -141,11 +147,6 @@ Page {
             PropertyChanges {
                 target: targetEditor
                 visible: true
-            }
-
-            PropertyChanges {
-                target: avatar
-                visible: false
             }
 
             AnchorChanges {

@@ -62,6 +62,7 @@ ApplicationWindow {
 
     CommGroupManager {
         id: groupManager
+        useBackgroundThread: true
     }
 
     CommGroupModel {
