@@ -47,7 +47,7 @@ Page {
             ToolButton{
                 iconSource: "image://theme/user-plus"
                 onClicked: {
-                    pageStack.push(Qt.resolvedUrl("ConversationPage.qml"), {add : true});
+                    pageStack.push(Qt.resolvedUrl("../pages/ConversationPage.qml"), {add : true});
                 }
             }
         ]
