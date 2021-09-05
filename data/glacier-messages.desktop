@@ -7,3 +7,4 @@ Comment=Nemo messaging application
 X-Desktop-File-Install-Version=0.19
 X-Maemo-Service=org.nemomobile.qmlmessages
 X-Maemo-Method=org.nemomobile.qmlmessages.showGroupsWindow
+Name[cs]=Zprávy
