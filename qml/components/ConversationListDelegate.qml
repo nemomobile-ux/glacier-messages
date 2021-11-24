@@ -63,6 +63,18 @@ ListViewItemWithActions {
         person = peopleModel.personById(model.contactIds[0])
     }
 
+    actions: [
+        ActionButton{
+            id: deleteConverstationButton
+            iconSource: "image://theme/trash"
+            onClicked: model.group.deleteGroup()
+        },
+        ActionButton{
+            id: markAsReadButton
+            iconSource: "image://theme/check"
+            onClicked: model.group.markAsRead()
+        }
+    ]
 
     Rectangle{
         id: unreadCount
