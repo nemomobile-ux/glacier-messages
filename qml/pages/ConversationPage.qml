@@ -74,7 +74,7 @@ Page {
     }
 
     Component.onCompleted: {
-        group.markAsRead()
+        markAsRead()
     }
 
     VoiceCallManager {
@@ -136,8 +136,8 @@ Page {
                 hTools.title = targetEditor.text
             }
 
-            groupManager.createOutgoingMessageEvent(group, channel.localUid, group.remoteUids[0], text, function(eventId) {
-                console.log("group" + group)
+            groupManager.createOutgoingMessageEvent(group.id, channel.localUid, group.remoteUids[0], text, function(eventId) {
+                console.log("groupId" + group.id)
                 console.log("channel.localUid" + channel.localUid)
                 console.log("group.remoteUids[0]" + group.remoteUids[0])
                 console.log("eventId" + eventId)
@@ -171,16 +171,31 @@ Page {
         }
     }
 
-    function _updateGroup() {
-        if (group === null)
-            group = groupManager.findGroup(channel.localUid, channel.remoteUid)
-    }
-
     Connections {
         target: groupManager
 
         function onGroupAdded(){ _updateGroup() }
         function onGroupUpdated() { _updateGroup() }
+    }
+
+    Connections {
+        target: Qt.application
+        onActiveChanged: markAsRead()
+    }
+
+    function _updateGroup() {
+        if (group === null)
+            group = groupManager.findGroup(channel.localUid, channel.remoteUid)
+    }
+
+    function markAsRead() {
+        if (!Qt.application.active) {
+            return
+        }
+
+        if (group && group.unreadMessages > 0) {
+            group.markAsRead()
+        }
     }
 }
 
