@@ -73,6 +73,10 @@ Page {
         ]
     }
 
+    Component.onCompleted: {
+        group.markAsRead()
+    }
+
     VoiceCallManager {
         id:callManager
     }
