@@ -39,11 +39,11 @@ import QtQuick.Controls.Styles.Nemo 1.0
 import org.nemomobile.qmlcontacts 1.0
 
 ListViewItemWithActions {
-    id: root
+    id: converstationListDelegate
     icon: getAvatar()
     showNext: true
-    label: person ? person.displayLabel : model.remoteUids[0]
-    description: model.lastMessageText
+    label: model.lastMessageText
+    description: person ? person.displayLabel : model.remoteUids[0]
 
     clip: true
 
@@ -61,6 +61,31 @@ ListViewItemWithActions {
 
     function updatePerson() {
         person = peopleModel.personById(model.contactIds[0])
+    }
+
+
+    Rectangle{
+        id: unreadCount
+        visible: model.unreadMessages > 0
+        width: Theme.itemHeightLarge/3
+        height: width
+        color: Theme.accentColor
+        radius: height/2
+
+        Text {
+            id: unreadCountText
+            text: model.unreadMessages > 99 ? "99+" : model.unreadMessages
+            font.pixelSize: parent.height*0.8
+            color: Theme.textColor
+            anchors.centerIn: parent
+        }
+
+        anchors{
+            bottom: converstationListDelegate.bottom
+            bottomMargin: Theme.itemSpacingExtraSmall
+            left: converstationListDelegate.left
+            leftMargin: Theme.itemHeightLarge/4*3
+        }
     }
 
     Label {
