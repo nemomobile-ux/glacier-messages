@@ -1,4 +1,4 @@
-/* Copyright (C) 2018 Chupligin Sergey <neochapay@gmail.com>
+/* Copyright (C) 2018-2021 Chupligin Sergey <neochapay@gmail.com>
  * Copyright (C) 2012 John Brooks <john.brooks@dereferenced.net>
  *
  * You may use this file under the terms of the BSD license as follows:
@@ -49,6 +49,8 @@ Item {
         id: view
         spacing: Theme.itemSpacingSmall
         anchors.fill: parent
+
+        clip: true
 
         // Necessary when opening VKB, for example
         onHeightChanged: view.positionViewAtBeginning()

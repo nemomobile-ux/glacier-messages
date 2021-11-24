@@ -1,4 +1,4 @@
-/* Copyright (C) 2018 Chupligin Sergey <neochapay@gmail.com>
+/* Copyright (C) 2018-2021 Chupligin Sergey <neochapay@gmail.com>
  * Copyright (C) 2012 John Brooks <john.brooks@dereferenced.net>
  * Copyright (C) 2011 Robin Burchell <robin+nemo@viroteck.net>
  *
@@ -73,7 +73,9 @@ Page {
         ]
     }
 
-    VoiceCallManager {id:callManager}
+    VoiceCallManager {
+        id:callManager
+    }
 
     TextField {
         id: targetEditor
@@ -93,6 +95,12 @@ Page {
 
     }
 
+    CommConversationModel {
+        id: conversationModel
+        useBackgroundThread: true
+        groupId: group ? group.id : -1
+    }
+
     MessagesView {
         id: messagesView
         anchors {
@@ -107,16 +115,6 @@ Page {
         }
 
         model: conversationModel
-        
-        CommConversationModel {
-            id: conversationModel
-            useBackgroundThread: true
-            groupId: group ? group.id : -1
-        }
-
-        Component.onCompleted: {
-            console.log("Message count",conversationModel.count)
-        }
     }
 
     ChatTextInput {
@@ -134,7 +132,13 @@ Page {
                 hTools.title = targetEditor.text
             }
 
-            channel.sendMessage(text)
+            groupManager.createOutgoingMessageEvent(group, channel.localUid, group.remoteUids[0], text, function(eventId) {
+                console.log("group" + group)
+                console.log("channel.localUid" + channel.localUid)
+                console.log("group.remoteUids[0]" + group.remoteUids[0])
+                console.log("eventId" + eventId)
+                channel.sendMessage(text, eventId)
+            })
             clear()
         }
     }
@@ -171,8 +175,8 @@ Page {
     Connections {
         target: groupManager
 
-        onGroupAdded: _updateGroup()
-        onGroupUpdated: _updateGroup()
+        function onGroupAdded(){ _updateGroup() }
+        function onGroupUpdated() { _updateGroup() }
     }
 }
 
