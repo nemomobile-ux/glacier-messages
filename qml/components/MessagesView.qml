@@ -52,9 +52,6 @@ Item {
 
         clip: true
 
-        // Necessary when opening VKB, for example
-        onHeightChanged: view.positionViewAtBeginning()
-
         Connections {
             target: model || null
             onRowsInserted: {
@@ -90,6 +87,44 @@ Item {
                 anchors{
                     left: model.direction == CommHistory.Outbound ? undefined : parent.left
                     right: model.direction == CommHistory.Outbound ? parent.right : undefined
+                }
+
+                NemoIcon{
+                    id: statusIcon
+                    visible:  model.direction === CommHistory.Outbound
+                    height: parent.height/4
+                    width: height
+
+                    anchors{
+                        bottom: messageBaloon.bottom
+                        left: messageBaloon.left
+                    }
+
+                    source: calcMessageIcon()
+
+                    function calcMessageIcon() {
+                        if(model.status === CommHistory.SendingStatus) {
+                            return "image://theme/upload"
+                        }
+
+                        if(model.status === CommHistory.SentStatus) {
+                            return "image://theme/check"
+                        }
+
+                        if(model.status === CommHistory.DeliveredStatus) {
+                            return "image://theme/check-double"
+                        }
+
+                        if(model.status === CommHistory.FailedStatus) {
+                            return "image://theme/exclamation-triangle"
+                        }
+
+                        if(model.status === CommHistory.DownloadingStatus) {
+                            return "image://theme/download"
+                        }
+                        statusIcon.visible = false
+                        return ""
+                    }
                 }
 
                 Text {
