@@ -33,7 +33,7 @@
 <context>
     <name>ConversationPage</name>
     <message>
-        <location filename="../qml/pages/ConversationPage.qml" line="92"/>
+        <location filename="../qml/pages/ConversationPage.qml" line="98"/>
         <source>Phone number</source>
         <translation type="unfinished"></translation>
     </message>
