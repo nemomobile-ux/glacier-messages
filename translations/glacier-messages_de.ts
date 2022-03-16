@@ -1,10 +1,10 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="de" version="2.1">
+<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="de">
 <context>
     <name>ChatTextInput</name>
     <message>
         <location filename="../qml/components/ChatTextInput.qml" line="85"/>
         <source>Type a message</source>
-        <translation>Nachricht Eingeben</translation>
+        <translation>Nachricht eingeben</translation>
     </message>
     <message>
         <location filename="../qml/components/ChatTextInput.qml" line="122"/>
@@ -31,7 +31,7 @@
 <context>
     <name>ConversationPage</name>
     <message>
-        <location filename="../qml/pages/ConversationPage.qml" line="92"/>
+        <location filename="../qml/pages/ConversationPage.qml" line="98"/>
         <source>Phone number</source>
         <translation>Telefonnummer</translation>
     </message>
