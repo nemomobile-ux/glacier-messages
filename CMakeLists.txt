@@ -12,9 +12,10 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 include(FeatureSummary)
 include(GNUInstallDirs)
 
-set(QT_MIN_VERSION "5.6.0")
+set(QT_MIN_VERSION "5.12.0")
 find_package(Qt5 COMPONENTS Gui Qml Quick DBus LinguistTools REQUIRED)
-find_package(Glacier COMPONENTS App REQUIRED)
+find_package(Glacier 0.8 COMPONENTS App REQUIRED)
+find_package(Qt5QuickCompiler)
 
 add_subdirectory(src)
 
@@ -37,9 +38,6 @@ install(FILES res/glacier-messages.png
 file(GLOB SVG_FILES res/*.svg)
 install(FILES ${SVG_FILES}
 	DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/glacier-messages/images)
-
-install(DIRECTORY qml
-	DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/glacier-messages)
 
 install(FILES
 	data/org.freedesktop.Telepathy.Client.qmlmessages.service

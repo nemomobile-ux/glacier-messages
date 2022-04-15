@@ -2,7 +2,9 @@ set(SRC
     main.cpp
 )
 
-add_executable(glacier-messages ${SRC})
+qtquick_compiler_add_resources(RESOURCES qml/glacier-messages.qrc)
+
+add_executable(glacier-messages ${SRC} ${RESOURCES})
 
 target_link_libraries(glacier-messages
 	Qt5::Gui
