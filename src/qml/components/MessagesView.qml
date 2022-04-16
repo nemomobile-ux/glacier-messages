@@ -55,8 +55,9 @@ Item {
         Connections {
             target: model || null
             onRowsInserted: {
-                if (first == 0)
+                if (first === 0) {
                     view.positionViewAtBeginning()
+                }
             }
             onModelReset: view.positionViewAtBeginning()
         }
@@ -69,9 +70,9 @@ Item {
             clip: true
 
             anchors{
-                left: model.direction == CommHistory.Outbound ? undefined : parent.left
+                left: model.direction === CommHistory.Outbound ? undefined : parent.left
                 leftMargin: Theme.itemSpacingSmall
-                right: model.direction == CommHistory.Outbound ? parent.right : undefined
+                right: model.direction === CommHistory.Outbound ? parent.right : undefined
                 rightMargin: Theme.itemSpacingSmall
             }
 
@@ -80,13 +81,13 @@ Item {
                 height: messageText.paintedHeight + Theme.itemSpacingSmall*2
                 width: messageText.paintedWidth + Theme.itemSpacingSmall*2
 
-                color: model.direction == CommHistory.Outbound ? Theme.fillColor : Theme.accentColor
+                color: model.direction === CommHistory.Outbound ? Theme.fillColor : Theme.accentColor
 
                 rotation: 180
 
-                anchors{
-                    left: model.direction == CommHistory.Outbound ? undefined : parent.left
-                    right: model.direction == CommHistory.Outbound ? parent.right : undefined
+                anchors {
+                    left: model.direction === CommHistory.Outbound ? undefined : parent.left
+                    right: model.direction === CommHistory.Outbound ? parent.right : undefined
                 }
 
                 NemoIcon{
@@ -103,25 +104,14 @@ Item {
                     source: calcMessageIcon()
 
                     function calcMessageIcon() {
-                        if(model.status === CommHistory.SendingStatus) {
-                            return "image://theme/upload"
+                        switch (model.status) {
+                        case CommHistory.SendingStatus: return "image://theme/upload";
+                        case CommHistory.SentStatus: return "image://theme/check";
+                        case CommHistory.DeliveredStatus: return "image://theme/check-double";
+                        case CommHistory.FailedStatus: return "image://theme/exclamation-triangle";
+                        case CommHistory.DownloadingStatus: return "image://theme/download";
                         }
 
-                        if(model.status === CommHistory.SentStatus) {
-                            return "image://theme/check"
-                        }
-
-                        if(model.status === CommHistory.DeliveredStatus) {
-                            return "image://theme/check-double"
-                        }
-
-                        if(model.status === CommHistory.FailedStatus) {
-                            return "image://theme/exclamation-triangle"
-                        }
-
-                        if(model.status === CommHistory.DownloadingStatus) {
-                            return "image://theme/download"
-                        }
                         statusIcon.visible = false
                         return ""
                     }
