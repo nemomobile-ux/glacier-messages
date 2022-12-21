@@ -78,7 +78,7 @@ Item {
 
             Rectangle{
                 id: messageBaloon
-                height: messageText.paintedHeight + Theme.itemSpacingSmall*2
+                height: messageText.paintedHeight + messageTime.paintedHeight + Theme.itemSpacingSmall*2
                 width: messageText.paintedWidth + Theme.itemSpacingSmall*2
 
                 color: model.direction === CommHistory.Outbound ? Theme.fillColor : Theme.accentColor
@@ -137,6 +137,16 @@ Item {
                             messageText.width = messageLine.width
                         }
                     }
+                }
+                Text {
+                    id: messageTime
+                    text: app.formatMessageTime(model.endTime)
+                    anchors.left: messageText.left
+                    anchors.top: messageText.bottom
+                    color: Theme.textColor
+                    font.family: Theme.fontFamily
+                    font.pixelSize: Theme.fontSizeTiny
+
                 }
             }
         }

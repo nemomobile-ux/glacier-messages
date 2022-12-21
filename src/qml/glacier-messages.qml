@@ -131,5 +131,16 @@ ApplicationWindow {
     Component.onCompleted: {
         showGroupsList()
     }
+
+
+    function formatMessageTime(t) {
+        var currentDate = new Date().toJSON().slice(0, 10);
+        var messageDate = Qt.formatDateTime(t, "yyyy-MM-dd");
+        if (currentDate === messageDate) {
+            return Qt.formatDateTime(t, "HH:mm")
+        }
+
+        return Qt.formatDateTime(t, "yyyy-MM-dd HH:mm")
+    }
 }
 
