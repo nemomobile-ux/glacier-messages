@@ -71,6 +71,7 @@ ListViewItemWithActions {
         },
         ActionButton{
             id: markAsReadButton
+            visible: model.unreadMessages > 0
             iconSource: "image://theme/check"
             onClicked: model.group.markAsRead()
         }
