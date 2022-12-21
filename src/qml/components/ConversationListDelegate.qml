@@ -43,7 +43,7 @@ ListViewItemWithActions {
     icon: getAvatar()
     showNext: true
     label: model.lastMessageText
-    description: person ? person.displayLabel : model.remoteUids[0]
+    description: (person ? person.displayLabel : model.remoteUids[0]) + " | " +  app.formatMessageTime(model.endTime)
 
     clip: true
 
@@ -101,13 +101,6 @@ ListViewItemWithActions {
         }
     }
 
-    Label {
-        id: messageDate
-        // XXX This should be something more natural/useful
-        text: Qt.formatDateTime(model.lastModified, "M/d")
-        anchors.left: parent.right
-        anchors.verticalCenter: parent.verticalCenter
-    }
 
     function getAvatar() {
         var av_source;
