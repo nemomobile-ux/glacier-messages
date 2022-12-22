@@ -79,7 +79,7 @@ Item {
             Rectangle{
                 id: messageBaloon
                 height: messageText.paintedHeight + messageTime.paintedHeight + Theme.itemSpacingSmall*2
-                width: messageText.paintedWidth + Theme.itemSpacingSmall*2
+                width: Math.max(messageText.paintedWidth, messageTime.paintedWidth)  + Theme.itemSpacingSmall*2
 
                 color: model.direction === CommHistory.Outbound ? Theme.fillColor : Theme.accentColor
 
@@ -120,8 +120,8 @@ Item {
                 Text {
                     id: messageText
                     text: model.freeText
-                    height: paintedHeight
-                    wrapMode: Text.Wrap
+                    width: messageLine.width - Theme.itemSpacingSmall*2
+                    wrapMode: Text.WrapAnywhere
                     color: Theme.textColor
                     font.family: Theme.fontFamily
                     font.pixelSize: Theme.fontSizeMedium
@@ -132,11 +132,6 @@ Item {
                         topMargin: Theme.itemSpacingSmall
                     }
 
-                    Component.onCompleted: {
-                        if(messageText.paintedWidth > messageLine.width) {
-                            messageText.width = messageLine.width
-                        }
-                    }
                 }
                 Text {
                     id: messageTime
