@@ -3,7 +3,7 @@ import Nemo.DBus 2.0
 
 Item {
     id: rootObject
-    signal startConversation(string localUid,  string remoteUid)
+    signal startConversation(string localUid, string remoteUid, bool show)
 
     DBusAdaptor {
         service: "org.nemomobile.qmlmessages"
@@ -14,11 +14,13 @@ Item {
              '    <method name="startConversation" />\n' +
              '        <arg name="localUid" type="s" direction="in"/>\n' +
              '        <arg name="remoteUid" type="s" direction="in"/>\n' +
+             '        <arg name="show" type="b" direction="in"/>\n' +
              '    </method>\n' +
              '  </interface>\n'
 
-        function startConversation(localUid, remoteUid) {
-            rootObject.startConversation(localUid, remoteUid)
+        function startConversation(localUid, remoteUid, show) {
+            console.log("DEBUG " + localUid + " " + remoteUid + " " + show)
+            rootObject.startConversation(localUid, remoteUid, show)
         }
     }
 }
