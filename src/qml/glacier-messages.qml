@@ -74,7 +74,9 @@ ApplicationWindow {
         id: messageService
 
         onStartConversation: {
+            console.log("start conversation: " + localUid + ", " + remoteUid + ", " + show)
             showConversation(localUid,remoteUid)
+            app.show()
         }
     }
 

@@ -19,7 +19,6 @@ Item {
              '  </interface>\n'
 
         function startConversation(localUid, remoteUid, show) {
-            console.log("DEBUG " + localUid + " " + remoteUid + " " + show)
             rootObject.startConversation(localUid, remoteUid, show)
         }
     }
