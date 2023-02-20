@@ -45,6 +45,11 @@ install(FILES
 	DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/dbus-1/services)
 
 install(FILES
+	data/glacier-messages.service
+	DESTINATION ${CMAKE_INSTALL_LIBDIR}/systemd/user/)
+
+
+install(FILES
 	data/glacier-messages.client
 	DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/telepathy/clients)
 
