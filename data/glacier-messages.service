@@ -1,0 +1,9 @@
+[Unit]
+Description=Glacier messaging application
+Requires=dbus.socket mission-control-5.service lipstick.service
+After=dbus.socket mission-control-5.service lipstick.service
+
+[Service]
+Type=dbus
+BusName=org.nemomobile.qmlmessages
+ExecStart=/usr/bin/glacier-messages -p
