@@ -13,6 +13,8 @@ set(CMAKE_INSTALL_PREFIX /usr)
 include(FeatureSummary)
 include(GNUInstallDirs)
 
+option(QML_DEBUG "Don't pack QML into binary for debug and develop" OFF)
+
 set(QT_MIN_VERSION "6.0.0")
 find_package(Qt6 COMPONENTS Gui Qml Quick DBus LinguistTools REQUIRED)
 find_package(Glacier 1.0 COMPONENTS App REQUIRED)
