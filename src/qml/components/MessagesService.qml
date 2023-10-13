@@ -1,5 +1,5 @@
-import QtQuick 2.6
-import Nemo.DBus 2.0
+import QtQuick
+import Nemo.DBus
 
 Item {
     id: rootObject

@@ -30,11 +30,11 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import QtQuick 2.6
+import QtQuick
+import QtQuick.Controls
 
-import QtQuick.Controls 1.0
-import QtQuick.Controls.Nemo 1.0
-import QtQuick.Controls.Styles.Nemo 1.0
+import Nemo
+import Nemo.Controls
 
 import "../components"
 
@@ -47,7 +47,7 @@ Page {
             ToolButton{
                 iconSource: "image://theme/user-plus"
                 onClicked: {
-                    pageStack.push(Qt.resolvedUrl("../pages/ConversationPage.qml"), {add : true});
+                    app.push(Qt.resolvedUrl("../pages/ConversationPage.qml"), {add : true});
                 }
             }
         ]

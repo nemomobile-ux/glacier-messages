@@ -29,14 +29,11 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import QtQuick 2.6
+import QtQuick
+import QtQuick.Controls
 
-import QtQuick.Controls 1.0
-import QtQuick.Controls.Nemo 1.0
-import QtQuick.Controls.Styles.Nemo 1.0
-
-import org.nemomobile.messages.internal 1.0
-import org.nemomobile.commhistory 1.0
+import Nemo
+import Nemo.Controls
 
 Item {
     property alias model: view.model

@@ -30,15 +30,14 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import QtQuick 2.6
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Window
 
-import QtQuick.Controls 1.0
-import QtQuick.Controls.Nemo 1.0
-import QtQuick.Controls.Styles.Nemo 1.0
+import Nemo
+import Nemo.Controls
 
-import org.nemomobile.messages.internal 1.0
 import org.nemomobile.contacts 1.0
-import org.nemomobile.commhistory 1.0
 
 import "components"
 import "pages"
@@ -46,28 +45,8 @@ import "pages"
 ApplicationWindow {
     id: app
 
-    // Shared AccountsModel
-    TelepathyAccountsModel {
-        id: accountsModel
-    }
-
     PeopleModel {
         id: peopleModel
-    }
-
-    TelepathyChannelManager {
-        id: channelManager
-        handlerName: "qmlmessages"
-    }
-
-    CommGroupManager {
-        id: groupManager
-        useBackgroundThread: true
-    }
-
-    CommGroupModel {
-        id: groupModel
-        manager: groupManager
     }
 
     MessagesService{

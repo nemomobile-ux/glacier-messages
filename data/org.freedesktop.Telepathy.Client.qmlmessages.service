@@ -1,4 +1,0 @@
-[D-BUS Service]
-Name=org.freedesktop.Telepathy.Client.qmlmessages
-Exec=/usr/bin/false
-SystemdService=glacier-messages.service
