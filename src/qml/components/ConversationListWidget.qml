@@ -50,7 +50,7 @@ Item {
         focus: true
         keyNavigationWraps: false
         clip: true
-//        model: groupModel
+        model: groupModel
 
         delegate: ConversationListDelegate {
             onClicked: {

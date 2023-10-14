@@ -37,13 +37,26 @@ import QtQuick.Window
 import Nemo
 import Nemo.Controls
 
+import QOfono
+
 import org.nemomobile.contacts 1.0
+import org.nemomobile.commhistory 1.0
 
 import "components"
 import "pages"
 
 ApplicationWindow {
     id: app
+
+    CommGroupModel {
+        id: groupModel
+        manager: groupManager
+    }
+
+    CommGroupManager {
+        id: groupManager
+        useBackgroundThread: true
+    }
 
     PeopleModel {
         id: peopleModel

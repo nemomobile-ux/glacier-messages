@@ -36,6 +36,8 @@ import QtQuick.Controls
 import Nemo
 import Nemo.Controls
 
+import org.nemomobile.commhistory 1.0
+
 import "../components"
 
 /* ConversationPage has two states, depending on if it has an active
@@ -87,6 +89,12 @@ Page {
         inputMethodHints: Qt.ImhNoAutoUppercase
         placeholderText: qsTr("Phone number")
 
+    }
+
+    CommConversationModel {
+        id: conversationModel
+        useBackgroundThread: true
+        groupId: group ? group.id : -1
     }
 
     MessagesView {
