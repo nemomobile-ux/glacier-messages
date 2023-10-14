@@ -19,7 +19,12 @@ set(QT_MIN_VERSION "6.0.0")
 find_package(Qt6 COMPONENTS Gui Qml Quick DBus LinguistTools REQUIRED)
 find_package(Glacier 1.0 COMPONENTS App REQUIRED)
 
+find_package(PkgConfig REQUIRED)
+pkg_check_modules(QOFONO qofono-qt6 REQUIRED IMPORTED_TARGET)
+pkg_check_modules(NEMONOTIFICATIONS nemonotifications-qt6 REQUIRED IMPORTED_TARGET)
+
 add_subdirectory(src)
+add_subdirectory(daemon)
 
 # Translations
 file(GLOB TS_FILES translations/*.ts)
