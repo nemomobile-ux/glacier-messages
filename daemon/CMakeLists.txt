@@ -9,7 +9,8 @@ target_link_libraries(messagesd
         Qt6::Core
         Qt6::DBus
         PkgConfig::QOFONO
-        PkgConfig::NEMONOTIFICATIONS)
+        PkgConfig::NEMONOTIFICATIONS
+        PkgConfig::COMMHISTORY)
 
 install(TARGETS messagesd RUNTIME
         DESTINATION ${CMAKE_INSTALL_BINDIR})

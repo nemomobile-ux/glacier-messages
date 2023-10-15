@@ -5,6 +5,9 @@
 #include <qofono-qt6/qofonomanager.h>
 #include <qofono-qt6/qofonomessagemanager.h>
 
+#include <CommHistory/event.h>
+#include <CommHistory/eventmodel.h>
+
 class MessagesHandler : public QObject
 {
     Q_OBJECT
@@ -18,6 +21,7 @@ private slots:
 private:
     QOfonoManager* m_ofonoManager;
     QList<QOfonoMessageManager*> m_messageManagers;
+    CommHistory::EventModel* m_commhistoryEventModel;
 };
 
 #endif // MESSAGESHANDLER_H

@@ -1,9 +1,12 @@
+#include <QDebug>
+
 #include "messageshandler.h"
 #include <notification.h>
 
 MessagesHandler::MessagesHandler(QObject *parent)
     : QObject(parent)
     , m_ofonoManager(new QOfonoManager(this))
+    , m_commhistoryEventModel(new CommHistory::EventModel(this))
 {
     connect(m_ofonoManager, &QOfonoManager::modemsChanged, this, &MessagesHandler::onModemsChanged);
 }
@@ -24,8 +27,12 @@ void MessagesHandler::onModemsChanged(const QStringList &modems)
 
 void MessagesHandler::onIncomingMessage(const QString &message, const QVariantMap &info)
 {
-    qDebug() << message;
-    qDebug() << info;
+    CommHistory::Event event;
+    event.setType(CommHistory::Event::SMSEvent);
+    event.setIsRead(false);
+    event.setDirection(CommHistory::Event::Inbound);
+    event.setFreeText(message.trimmed());
+    event.setStartTime(info.value("SentTime").toDateTime());
 
     Notification newMessageNotification;
     newMessageNotification.setAppName(tr("Messages"));
@@ -34,5 +41,9 @@ void MessagesHandler::onIncomingMessage(const QString &message, const QVariantMa
     newMessageNotification.setIcon("/usr/share/glacier-messages/glacier-messages.png");
     newMessageNotification.setUrgency(Notification::Urgency::Normal);
 
-    newMessageNotification.publish();
+    if(m_commhistoryEventModel->addEvent(event)) {
+        newMessageNotification.publish();
+    } else {
+        qWarning() << "Can`t save event";
+    }
 }

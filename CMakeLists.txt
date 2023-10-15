@@ -22,6 +22,7 @@ find_package(Glacier 1.0 COMPONENTS App REQUIRED)
 find_package(PkgConfig REQUIRED)
 pkg_check_modules(QOFONO qofono-qt6 REQUIRED IMPORTED_TARGET)
 pkg_check_modules(NEMONOTIFICATIONS nemonotifications-qt6 REQUIRED IMPORTED_TARGET)
+pkg_check_modules(COMMHISTORY commhistory-qt6 REQUIRED IMPORTED_TARGET)
 
 add_subdirectory(src)
 add_subdirectory(daemon)
