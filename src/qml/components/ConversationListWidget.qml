@@ -1,4 +1,4 @@
-/* Copyright (C) 2018 Chupligin Serhey <neochapay@gmail.com>
+/* Copyright (C) 2018-2023 Chupligin Serhey <neochapay@gmail.com>
  * Copyright (C) 2012 John Brooks <john.brooks@dereferenced.net>
  * Copyright (C) 2011 Robin Burchell <robin+nemo@viroteck.net>
  *
@@ -54,9 +54,7 @@ Item {
 
         delegate: ConversationListDelegate {
             onClicked: {
-                var group = model.group
-                var channel = channelManager.getConversation(group.localUid, group.remoteUids[0])
-                pageStack.push(Qt.resolvedUrl("../pages/ConversationPage.qml"), { "channel": channel, "group": group })
+                app.push(Qt.resolvedUrl("../pages/ConversationPage.qml"), { "group": model.group })
             }
         }
 

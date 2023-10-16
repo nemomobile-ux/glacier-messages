@@ -1,4 +1,4 @@
-/* Copyright (C) 2018-2021 Chupligin Sergey <neochapay@gmail.com>
+/* Copyright (C) 2018-2023 Chupligin Sergey <neochapay@gmail.com>
  * Copyright (C) 2012 John Brooks <john.brooks@dereferenced.net>
  *
  * You may use this file under the terms of the BSD license as follows:
@@ -35,6 +35,8 @@ import QtQuick.Controls
 import Nemo
 import Nemo.Controls
 
+import org.nemomobile.commhistory 1.0
+
 Item {
     property alias model: view.model
     // The event model is in descending order, but we need to display ascending.
@@ -51,12 +53,12 @@ Item {
 
         Connections {
             target: model || null
-            onRowsInserted: {
+            function onRowsInserted(first, last) {
                 if (first === 0) {
                     view.positionViewAtBeginning()
                 }
             }
-            onModelReset: view.positionViewAtBeginning()
+            function onModelReset() { view.positionViewAtBeginning() }
         }
 
         delegate: Item{

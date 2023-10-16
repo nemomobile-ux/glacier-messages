@@ -58,6 +58,23 @@ ApplicationWindow {
         useBackgroundThread: true
     }
 
+    OfonoManager {
+        id: manager
+    }
+
+    OfonoMessageManager{
+        id: messageManager
+        modemPath: manager.defaultModem
+        onMessageAdded: {
+            console.log("HELLO MESSAGE")
+            console.log(message)
+        }
+
+        Component.onCompleted: {
+            messageManager.sendMessage("+79962491221", "Hello nemo")
+        }
+    }
+
     PeopleModel {
         id: peopleModel
     }

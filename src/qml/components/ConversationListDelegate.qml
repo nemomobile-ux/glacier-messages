@@ -1,4 +1,4 @@
-/* Copyright (C) 2018-2021 Chupligin Serhey <neochapay@gmail.com>
+/* Copyright (C) 2018-2023 Chupligin Serhey <neochapay@gmail.com>
  * Copyright (C) 2012 John Brooks <john.brooks@dereferenced.net>
  * Copyright (C) 2011 Robin Burchell <robin+nemo@viroteck.net>
  *
