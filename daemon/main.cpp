@@ -28,8 +28,8 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <QCoreApplication>
 #include "messageshandler.h"
+#include <QCoreApplication>
 
 int main(int argc, char** argv)
 {

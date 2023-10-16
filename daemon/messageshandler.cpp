@@ -3,15 +3,16 @@
 #include "messageshandler.h"
 #include <notification.h>
 
-MessagesHandler::MessagesHandler(QObject *parent)
+MessagesHandler::MessagesHandler(QObject* parent)
     : QObject(parent)
     , m_ofonoManager(new QOfonoManager(this))
     , m_commhistoryEventModel(new CommHistory::EventModel(this))
 {
-    connect(m_ofonoManager, &QOfonoManager::modemsChanged, this, &MessagesHandler::onModemsChanged);
+    connect(m_ofonoManager, &QOfonoManager::modemsChanged, this,
+        &MessagesHandler::onModemsChanged);
 }
 
-void MessagesHandler::onModemsChanged(const QStringList &modems)
+void MessagesHandler::onModemsChanged(const QStringList& modems)
 {
     foreach (QOfonoMessageManager* manager, m_messageManagers) {
         manager->disconnect();
@@ -21,11 +22,13 @@ void MessagesHandler::onModemsChanged(const QStringList &modems)
     foreach (QString modem, modems) {
         QOfonoMessageManager* manager = new QOfonoMessageManager(this);
         manager->setModemPath(modem);
-        connect(manager, &QOfonoMessageManager::incomingMessage, this, &MessagesHandler::onIncomingMessage);
+        connect(manager, &QOfonoMessageManager::incomingMessage, this,
+            &MessagesHandler::onIncomingMessage);
     }
 }
 
-void MessagesHandler::onIncomingMessage(const QString &message, const QVariantMap &info)
+void MessagesHandler::onIncomingMessage(const QString& message,
+    const QVariantMap& info)
 {
     CommHistory::Event event;
     event.setType(CommHistory::Event::SMSEvent);
@@ -38,10 +41,11 @@ void MessagesHandler::onIncomingMessage(const QString &message, const QVariantMa
     newMessageNotification.setAppName(tr("Messages"));
     newMessageNotification.setSummary(info.key("Sender"));
     newMessageNotification.setBody(message);
-    newMessageNotification.setIcon("/usr/share/glacier-messages/glacier-messages.png");
+    newMessageNotification.setIcon(
+        "/usr/share/glacier-messages/glacier-messages.png");
     newMessageNotification.setUrgency(Notification::Urgency::Normal);
 
-    if(m_commhistoryEventModel->addEvent(event)) {
+    if (m_commhistoryEventModel->addEvent(event)) {
         newMessageNotification.publish();
     } else {
         qWarning() << "Can`t save event";
