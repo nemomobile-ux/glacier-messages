@@ -7,6 +7,10 @@
 
 #include <CommHistory/event.h>
 #include <CommHistory/eventmodel.h>
+#include <CommHistory/group.h>
+#include <CommHistory/groupmodel.h>
+
+static QString LOCAL_UID = "/org/glacier/messagesd";
 
 class MessagesHandler : public QObject {
     Q_OBJECT
@@ -18,9 +22,12 @@ private slots:
     void onIncomingMessage(const QString& message, const QVariantMap& info);
 
 private:
+    int getGroupId(QString sender);
+
     QOfonoManager* m_ofonoManager;
     QList<QOfonoMessageManager*> m_messageManagers;
     CommHistory::EventModel* m_commhistoryEventModel;
+    CommHistory::GroupModel* m_groupModel;
 };
 
 #endif // MESSAGESHANDLER_H
