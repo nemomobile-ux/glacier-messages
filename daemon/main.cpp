@@ -33,7 +33,7 @@
 
 int main(int argc, char** argv)
 {
-    QCoreApplication* app = QCoreApplication::instance();
+    QCoreApplication* app = new QCoreApplication(argc, argv);
     app->setOrganizationName("NemoMobile");
     app->setApplicationName("messaged");
 
