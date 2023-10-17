@@ -47,7 +47,7 @@ import "../components"
 Page {
     id: conversationPage
 
-    property QtObject group
+    property var group: null
     property QtObject person: group ? peopleModel.personById(group.contactId) : null
     property string remoteUid: ""
 
