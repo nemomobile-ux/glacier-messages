@@ -1,5 +1,6 @@
 #include <QDebug>
 
+#include "constants.h"
 #include "messageshandler.h"
 #include <notification.h>
 
@@ -61,7 +62,7 @@ int MessagesHandler::getGroupId(QString sender)
 
 void MessagesHandler::onIncomingMessage(const QString& message, const QVariantMap& info)
 {
-    QString sender = info.key("Sender");
+    QString sender = info.value("Sender").toString();
 
     int groupId = getGroupId(sender);
     if (groupId < 0) {
@@ -76,15 +77,29 @@ void MessagesHandler::onIncomingMessage(const QString& message, const QVariantMa
     event.setStartTime(info.value("SentTime").toDateTime());
     event.setGroupId(groupId);
 
-    Notification newMessageNotification;
-    newMessageNotification.setAppName(tr("Messages"));
-    newMessageNotification.setSummary(sender);
-    newMessageNotification.setBody(message);
-    newMessageNotification.setIcon(
-        "/usr/share/glacier-messages/glacier-messages.png");
-    newMessageNotification.setUrgency(Notification::Urgency::Normal);
-
     if (m_commhistoryEventModel->addEvent(event)) {
+        Notification newMessageNotification;
+        newMessageNotification.setAppName(tr("Messages"));
+        newMessageNotification.setSummary(sender);
+        newMessageNotification.setBody(message);
+        newMessageNotification.setIcon("/usr/share/glacier-messages/glacier-messages.png");
+        newMessageNotification.setUrgency(Notification::Urgency::Normal);
+        newMessageNotification.setTimestamp(QDateTime::currentDateTimeUtc());
+        newMessageNotification.setHintValue("x-nemo-display-on", true);
+        newMessageNotification.setHintValue("x-nemo-priority", 120);
+
+        QVariantList remoteActions;
+        remoteActions.append(Notification::remoteAction("default",
+            QString(),
+            MESSAGING_SERVICE_NAME,
+            "/",
+            MESSAGING_INTERFACE,
+            START_CONVERSATION_METHOD,
+            QVariantList() << LOCAL_UID
+                           << sender
+                           << true));
+
+        newMessageNotification.setRemoteActions(remoteActions);
         newMessageNotification.publish();
     } else {
         qWarning() << "Can`t save event";

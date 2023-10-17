@@ -1,7 +1,8 @@
 set(SRC main.cpp
     messageshandler.cpp)
 
-set(HEADERS messageshandler.h)
+set(HEADERS messageshandler.h
+    constants.h)
 
 add_executable(messagesd ${SRC} ${HEADERS})
 

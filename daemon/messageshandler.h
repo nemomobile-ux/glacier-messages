@@ -10,8 +10,6 @@
 #include <CommHistory/group.h>
 #include <CommHistory/groupmodel.h>
 
-static QString LOCAL_UID = "/org/glacier/messagesd";
-
 class MessagesHandler : public QObject {
     Q_OBJECT
 public:
