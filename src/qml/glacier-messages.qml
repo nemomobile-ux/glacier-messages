@@ -79,16 +79,6 @@ ApplicationWindow {
         id: peopleModel
     }
 
-    MessagesService{
-        id: messageService
-
-        onStartConversation: {
-            console.log("start conversation: " + localUid + ", " + remoteUid + ", " + show)
-            showConversation(localUid,remoteUid)
-            app.show()
-        }
-    }
-
     CommHistoryService {
         id: commHistory
 
@@ -108,12 +98,11 @@ ApplicationWindow {
         }
     }
 
-    function showConversation(localUid, remoteUid)
+    function showConversation(localUid, remoteUid, show)
     {
-        var channel = channelManager.getConversation(localUid, remoteUid)
         var group = groupManager.findGroup(localUid, remoteUid)
 
-        if (!channel) {
+        if (!group) {
             return
         }
 
@@ -125,7 +114,7 @@ ApplicationWindow {
             pageStack.push(Qt.resolvedUrl("pages/ConversationListPage.qml"))
         }
 
-        pageStack.push(Qt.resolvedUrl("pages/ConversationPage.qml"), { channel: channel, group: group, remoteUid: remoteUid })
+        pageStack.push(Qt.resolvedUrl("pages/ConversationPage.qml"), { group: group, remoteUid: remoteUid })
 
         app.raise()
     }

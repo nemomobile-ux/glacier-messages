@@ -1,6 +1,4 @@
-/* Copyright (C) 2018-2023 Chupligin Sergey <neochapay@gmail.com>
- * Copyright (C) 2012 John Brooks <john.brooks@dereferenced.net>
- * Copyright (C) 2011 Robin Burchell <robin+mer@viroteck.net>
+/* Copyright (C) 2023 Chupligin Sergey <neochapay@gmail.com>
  *
  * You may use this file under the terms of the BSD license as follows:
  *
@@ -30,27 +28,29 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifdef QT_QML_DEBUG
-#include <QtQuick>
-#endif
+#ifndef DBUSADAPTOR_H
+#define DBUSADAPTOR_H
 
-#include <QGuiApplication>
-#include <QQuickView>
-#include <QtQml>
+#include <QDBusAbstractAdaptor>
+#include <QObject>
+#include <QQuickWindow>
 
-#include <glacierapp.h>
+class DBusAdaptor : public QDBusAbstractAdaptor {
+    Q_OBJECT
+    Q_CLASSINFO("D-Bus Interface", "org.nemomobile.qmlmessages")
 
-#include "dbusadaptor.h"
+public:
+    explicit DBusAdaptor(QQuickWindow* window);
 
-Q_DECL_EXPORT int main(int argc, char** argv)
-{
-    QGuiApplication* app = GlacierApp::app(argc, argv);
-    app->setOrganizationName("NemoMobile");
+public slots:
+    void showGroupsWindow();
+    void showGroupsWindow(const QStringList& a);
 
-    QQuickWindow* window = GlacierApp::showWindow();
-    window->setTitle(QObject::tr("Messages"));
-    window->setIcon(QIcon("/usr/share/glacier-messages/glacier-messages.png"));
+    void startConversation(const QString& localUid, const QString& remoteUid, bool show);
+    void startSMS(const QString& phoneNumber);
 
-    DBusAdaptor* adaptor = new DBusAdaptor(window);
-    return app->exec();
-}
+private:
+    QQuickWindow* m_window;
+};
+
+#endif // DBUSADAPTOR_H

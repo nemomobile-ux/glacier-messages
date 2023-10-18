@@ -1,12 +1,16 @@
 set(SRC 
     main.cpp
+    dbusadaptor.cpp
 )
+
+set(HEADERS
+    dbusadaptor.h)
 
 if(!QML_DEBUG)
 qt_add_resources(RESOURCES qml/glacier-messages.qrc)
 endif()
 
-add_executable(glacier-messages ${SRC} ${RESOURCES})
+add_executable(glacier-messages ${SRC} ${HEADERS} ${RESOURCES})
 
 target_link_libraries(glacier-messages
         Qt6::Gui

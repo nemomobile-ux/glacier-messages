@@ -1,6 +1,4 @@
-/* Copyright (C) 2018-2023 Chupligin Sergey <neochapay@gmail.com>
- * Copyright (C) 2012 John Brooks <john.brooks@dereferenced.net>
- * Copyright (C) 2011 Robin Burchell <robin+mer@viroteck.net>
+/* Copyright (C) 2023 Chupligin Sergey <neochapay@gmail.com>
  *
  * You may use this file under the terms of the BSD license as follows:
  *
@@ -30,27 +28,51 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifdef QT_QML_DEBUG
-#include <QtQuick>
-#endif
-
-#include <QGuiApplication>
-#include <QQuickView>
-#include <QtQml>
-
-#include <glacierapp.h>
-
 #include "dbusadaptor.h"
+#include "qquickwindow.h"
 
-Q_DECL_EXPORT int main(int argc, char** argv)
+#include <QCoreApplication>
+#include <QDBusConnection>
+#include <QDBusConnectionInterface>
+
+DBusAdaptor::DBusAdaptor(QQuickWindow* window)
+    : QDBusAbstractAdaptor(window)
+    , m_window(window)
 {
-    QGuiApplication* app = GlacierApp::app(argc, argv);
-    app->setOrganizationName("NemoMobile");
+    QDBusConnection sessionbus = QDBusConnection::sessionBus();
 
-    QQuickWindow* window = GlacierApp::showWindow();
-    window->setTitle(QObject::tr("Messages"));
-    window->setIcon(QIcon("/usr/share/glacier-messages/glacier-messages.png"));
+    if (sessionbus.interface()->isServiceRegistered("org.nemomobile.qmlmessages")) {
+        qWarning() << "Second start of glacier dialler";
+        QCoreApplication::quit();
+    }
 
-    DBusAdaptor* adaptor = new DBusAdaptor(window);
-    return app->exec();
+    QDBusConnection::sessionBus().registerService("org.nemomobile.qmlmessages");
+    if (!QDBusConnection::sessionBus().registerObject("/", m_window)) {
+        qWarning() << Q_FUNC_INFO << "Cannot register DBus object!";
+    }
+}
+
+void DBusAdaptor::showGroupsWindow()
+{
+    m_window->raise();
+}
+
+void DBusAdaptor::showGroupsWindow(const QStringList& a)
+{
+    QMetaObject::invokeMethod(m_window, "startSMS", Q_ARG(QStringList, a));
+    m_window->raise();
+}
+
+void DBusAdaptor::startConversation(const QString& localUid, const QString& remoteUid, bool show)
+{
+    QMetaObject::invokeMethod(m_window, "showConversation", Q_ARG(QVariant, localUid), Q_ARG(QVariant, remoteUid));
+    if (show) {
+        m_window->raise();
+    }
+}
+
+void DBusAdaptor::startSMS(const QString& phoneNumber)
+{
+    QMetaObject::invokeMethod(m_window, "startSMS", Q_ARG(QVariant, phoneNumber));
+    m_window->raise();
 }
