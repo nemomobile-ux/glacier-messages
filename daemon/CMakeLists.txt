@@ -15,3 +15,6 @@ target_link_libraries(messagesd
 
 install(TARGETS messagesd RUNTIME
         DESTINATION ${CMAKE_INSTALL_BINDIR})
+
+install(FILES messagesd.service
+        DESTINATION ${CMAKE_INSTALL_LIBDIR}/systemd/user/)
