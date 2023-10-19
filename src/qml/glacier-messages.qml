@@ -30,13 +30,15 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import QtQuick 2.6
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Window
 
-import QtQuick.Controls 1.0
-import QtQuick.Controls.Nemo 1.0
-import QtQuick.Controls.Styles.Nemo 1.0
+import Nemo
+import Nemo.Controls
 
-import org.nemomobile.messages.internal 1.0
+import QOfono
+
 import org.nemomobile.contacts 1.0
 import org.nemomobile.commhistory 1.0
 
@@ -46,18 +48,9 @@ import "pages"
 ApplicationWindow {
     id: app
 
-    // Shared AccountsModel
-    TelepathyAccountsModel {
-        id: accountsModel
-    }
-
-    PeopleModel {
-        id: peopleModel
-    }
-
-    TelepathyChannelManager {
-        id: channelManager
-        handlerName: "qmlmessages"
+    CommGroupModel {
+        id: groupModel
+        manager: groupManager
     }
 
     CommGroupManager {
@@ -65,19 +58,25 @@ ApplicationWindow {
         useBackgroundThread: true
     }
 
-    CommGroupModel {
-        id: groupModel
-        manager: groupManager
+    OfonoManager {
+        id: manager
     }
 
-    MessagesService{
-        id: messageService
-
-        onStartConversation: {
-            console.log("start conversation: " + localUid + ", " + remoteUid + ", " + show)
-            showConversation(localUid,remoteUid)
-            app.show()
+    OfonoMessageManager{
+        id: messageManager
+        modemPath: manager.defaultModem
+        onMessageAdded: {
+            console.log("HELLO MESSAGE")
+            console.log(message)
         }
+
+        Component.onCompleted: {
+            messageManager.sendMessage("+79962491221", "Hello nemo")
+        }
+    }
+
+    PeopleModel {
+        id: peopleModel
     }
 
     CommHistoryService {
@@ -99,12 +98,11 @@ ApplicationWindow {
         }
     }
 
-    function showConversation(localUid, remoteUid)
+    function showConversation(localUid, remoteUid, show)
     {
-        var channel = channelManager.getConversation(localUid, remoteUid)
         var group = groupManager.findGroup(localUid, remoteUid)
 
-        if (!channel) {
+        if (!group) {
             return
         }
 
@@ -116,7 +114,7 @@ ApplicationWindow {
             pageStack.push(Qt.resolvedUrl("pages/ConversationListPage.qml"))
         }
 
-        pageStack.push(Qt.resolvedUrl("pages/ConversationPage.qml"), { channel: channel, group: group, remoteUid: remoteUid })
+        pageStack.push(Qt.resolvedUrl("pages/ConversationPage.qml"), { group: group, remoteUid: remoteUid })
 
         app.raise()
     }

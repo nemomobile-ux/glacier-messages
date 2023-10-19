@@ -1,4 +1,4 @@
-/* Copyright (C) 2018-2021 Chupligin Sergey <neochapay@gmail.com>
+/* Copyright (C) 2018-2023 Chupligin Sergey <neochapay@gmail.com>
  * Copyright (C) 2012 John Brooks <john.brooks@dereferenced.net>
  * Copyright (C) 2011 Robin Burchell <robin+nemo@viroteck.net>
  *
@@ -30,17 +30,13 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import QtQuick 2.6
+import QtQuick
+import QtQuick.Controls
 
-import QtQuick.Controls 1.0
-import QtQuick.Controls.Nemo 1.0
-import QtQuick.Controls.Styles.Nemo 1.0
+import Nemo
+import Nemo.Controls
 
-import org.nemomobile.messages.internal 1.0
-import org.nemomobile.qmlcontacts 1.0
 import org.nemomobile.commhistory 1.0
-import org.nemomobile.voicecall 1.0
-
 
 import "../components"
 
@@ -51,8 +47,7 @@ import "../components"
 Page {
     id: conversationPage
 
-    property QtObject channel: null
-    property QtObject group
+    property var group: null
     property QtObject person: group ? peopleModel.personById(group.contactId) : null
     property string remoteUid: ""
 
@@ -77,13 +72,8 @@ Page {
         markAsRead()
     }
 
-    VoiceCallManager {
-        id:callManager
-    }
-
     TextField {
         id: targetEditor
-        visible: !channel
         width: parent.width-Theme.itemSpacingLarge*2
         height: Theme.itemHeightExtraLarge-Theme.itemSpacingLarge*2
 
@@ -127,47 +117,17 @@ Page {
         width: parent.width
 
         onSendMessage: {
-            if (text.length < 1 && (!channel && targetEditor.length < 1)) {
+            if (text.length < 1 && (targetEditor.length < 1)) {
                 return
             }
 
-            if(!channel) {
-                channel = channelManager.getConversation(accountsModel.get(0, TelepathyAccountsModel.AccountUidRole),targetEditor.text)
-                hTools.title = targetEditor.text
-            }
-
-            groupManager.createOutgoingMessageEvent(group.id, channel.localUid, group.remoteUids[0], text, function(eventId) {
+            groupManager.createOutgoingMessageEvent(group.id, group.localUid, group.remoteUids[0], text, function(eventId) {
                 console.log("groupId" + group.id)
-                console.log("channel.localUid" + channel.localUid)
+                console.log("group.localUid" + group.localUid)
                 console.log("group.remoteUids[0]" + group.remoteUids[0])
                 console.log("eventId" + eventId)
-                channel.sendMessage(text, eventId)
             })
             clear()
-        }
-    }
-
-    states: [
-        State {
-            name: "new"
-            when: channel == null
-
-            PropertyChanges {
-                target: targetEditor
-                visible: true
-            }
-
-            AnchorChanges {
-                target: messagesView
-                anchors.top: targetEditor.bottom
-            }
-        }
-    ]
-
-    onChannelChanged: {
-        if (channel != null) {
-            channel.ensureChannel()
-            _updateGroup()
         }
     }
 
@@ -178,14 +138,9 @@ Page {
         function onGroupUpdated() { _updateGroup() }
     }
 
-    Connections {
-        target: Qt.application
-        onActiveChanged: markAsRead()
-    }
-
     function _updateGroup() {
         if (group === null)
-            group = groupManager.findGroup(channel.localUid, channel.remoteUid)
+            group = groupManager.findGroup(group.localUid, group.remoteUid)
     }
 
     function markAsRead() {

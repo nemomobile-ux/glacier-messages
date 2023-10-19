@@ -1,4 +1,4 @@
-/* Copyright (C) 2018-2021 Chupligin Serhey <neochapay@gmail.com>
+/* Copyright (C) 2018-2023 Chupligin Serhey <neochapay@gmail.com>
  * Copyright (C) 2012 John Brooks <john.brooks@dereferenced.net>
  * Copyright (C) 2011 Robin Burchell <robin+nemo@viroteck.net>
  *
@@ -30,13 +30,11 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import QtQuick 2.6
+import QtQuick
+import QtQuick.Controls
 
-import QtQuick.Controls 1.0
-import QtQuick.Controls.Nemo 1.0
-import QtQuick.Controls.Styles.Nemo 1.0
-
-import org.nemomobile.qmlcontacts 1.0
+import Nemo
+import Nemo.Controls
 
 ListViewItemWithActions {
     id: converstationListDelegate

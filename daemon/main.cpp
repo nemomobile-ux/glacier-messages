@@ -1,5 +1,4 @@
-/* Copyright (C) 2018 Chupligin Sergey <neochapay@gmail.com>
- * Copyright (C) 2012 John Brooks <john.brooks@dereferenced.net>
+/* Copyright (C) 2023 Chupligin Sergey <neochapay@gmail.com>
  *
  * You may use this file under the terms of the BSD license as follows:
  *
@@ -28,57 +27,17 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-import QtQuick
-import QtQuick.Controls
 
-import Nemo
-import Nemo.Controls
+#include "messageshandler.h"
+#include <QCoreApplication>
 
-Item {
-    id: targetEdirBox
-    height: targetInput.height + 22
+int main(int argc, char** argv)
+{
+    QCoreApplication* app = new QCoreApplication(argc, argv);
+    app->setOrganizationName("NemoMobile");
+    app->setApplicationName("messaged");
 
-    property alias text: targetInput.text
+    MessagesHandler messageHandler;
 
-    TextField {
-        id: targetInput
-        placeholderText: "To:"
-        focus: true
-        anchors{
-            left: parent.left
-            margins: 10
-        }
-        width: targetEdirBox.width-addNewButton.width-targetEdirBox.height*0.2
-    }
-    
-    Image{
-        id: addNewButton
-        width: targetEdirBox.height*0.8
-        height: width
-
-        source: "image://theme/plus-circle"
-
-        anchors{
-            top: targetEdirBox.top
-            topMargin: targetEdirBox.height*0.1
-            right: targetEdirBox.right
-            rightMargin: targetEdirBox.height*0.1
-        }
-
-        MouseArea{
-            anchors.fill: parent
-            onClicked: {
-                console.log("Open select contacts dialog")
-            }
-        }
-    }
-
-    Rectangle {
-        anchors.bottom: parent.bottom
-        anchors.left: parent.left
-        anchors.right: parent.right
-        height: 2
-        color: "#c0c0c0"
-    }
+    return app->exec();
 }
-

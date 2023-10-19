@@ -1,4 +1,4 @@
-/* Copyright (C) 2018 Chupligin Serhey <neochapay@gmail.com>
+/* Copyright (C) 2018-2023 Chupligin Serhey <neochapay@gmail.com>
  * Copyright (C) 2012 John Brooks <john.brooks@dereferenced.net>
  * Copyright (C) 2011 Robin Burchell <robin+nemo@viroteck.net>
  *
@@ -29,14 +29,11 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+import QtQuick
+import QtQuick.Controls
 
-import QtQuick 2.6
-
-import QtQuick.Controls 1.0
-import QtQuick.Controls.Nemo 1.0
-import QtQuick.Controls.Styles.Nemo 1.0
-
-import org.nemomobile.messages.internal 1.0
+import Nemo
+import Nemo.Controls
 
 Item {
     Label{
@@ -57,9 +54,7 @@ Item {
 
         delegate: ConversationListDelegate {
             onClicked: {
-                var group = model.group
-                var channel = channelManager.getConversation(group.localUid, group.remoteUids[0])
-                pageStack.push(Qt.resolvedUrl("../pages/ConversationPage.qml"), { "channel": channel, "group": group })
+                app.push(Qt.resolvedUrl("../pages/ConversationPage.qml"), { "group": model.group })
             }
         }
 

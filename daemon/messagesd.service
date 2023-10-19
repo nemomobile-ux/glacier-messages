@@ -1,0 +1,11 @@
+[Unit]
+Description=Messages handler daemon
+After=dbus.socket ofono.service
+Requires=dbus.socket
+
+[Service]
+ExecStart=/usr/bin/messagesd
+Restart=always
+
+[Install]
+WantedBy=graphical-session.target

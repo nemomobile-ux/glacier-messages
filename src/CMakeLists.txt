@@ -1,17 +1,28 @@
 set(SRC 
     main.cpp
+    dbusadaptor.cpp
 )
 
-qtquick_compiler_add_resources(RESOURCES qml/glacier-messages.qrc)
+set(HEADERS
+    dbusadaptor.h)
 
-add_executable(glacier-messages ${SRC} ${RESOURCES})
+if(!QML_DEBUG)
+qt_add_resources(RESOURCES qml/glacier-messages.qrc)
+endif()
+
+add_executable(glacier-messages ${SRC} ${HEADERS} ${RESOURCES})
 
 target_link_libraries(glacier-messages
-	Qt5::Gui
-	Qt5::Qml
-	Qt5::Quick
-	Qt5::DBus
+        Qt6::Gui
+        Qt6::Qml
+        Qt6::Quick
+        Qt6::DBus
 	Glacier::App)
 
 install(TARGETS glacier-messages RUNTIME
 	DESTINATION ${CMAKE_INSTALL_BINDIR})
+
+if(QML_DEBUG)
+install(DIRECTORY qml
+        DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/glacier-messages)
+endif()

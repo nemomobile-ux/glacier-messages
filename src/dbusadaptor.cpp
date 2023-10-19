@@ -1,5 +1,4 @@
-/* Copyright (C) 2018 Chupligin Sergey <neochapay@gmail.com>
- * Copyright (C) 2012 John Brooks <john.brooks@dereferenced.net>
+/* Copyright (C) 2023 Chupligin Sergey <neochapay@gmail.com>
  *
  * You may use this file under the terms of the BSD license as follows:
  *
@@ -28,57 +27,52 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-import QtQuick
-import QtQuick.Controls
 
-import Nemo
-import Nemo.Controls
+#include "dbusadaptor.h"
+#include "qquickwindow.h"
 
-Item {
-    id: targetEdirBox
-    height: targetInput.height + 22
+#include <QCoreApplication>
+#include <QDBusConnection>
+#include <QDBusConnectionInterface>
 
-    property alias text: targetInput.text
+DBusAdaptor::DBusAdaptor(QQuickWindow* window)
+    : QDBusAbstractAdaptor(window)
+    , m_window(window)
+{
+    QDBusConnection sessionbus = QDBusConnection::sessionBus();
 
-    TextField {
-        id: targetInput
-        placeholderText: "To:"
-        focus: true
-        anchors{
-            left: parent.left
-            margins: 10
-        }
-        width: targetEdirBox.width-addNewButton.width-targetEdirBox.height*0.2
-    }
-    
-    Image{
-        id: addNewButton
-        width: targetEdirBox.height*0.8
-        height: width
-
-        source: "image://theme/plus-circle"
-
-        anchors{
-            top: targetEdirBox.top
-            topMargin: targetEdirBox.height*0.1
-            right: targetEdirBox.right
-            rightMargin: targetEdirBox.height*0.1
-        }
-
-        MouseArea{
-            anchors.fill: parent
-            onClicked: {
-                console.log("Open select contacts dialog")
-            }
-        }
+    if (sessionbus.interface()->isServiceRegistered("org.nemomobile.qmlmessages")) {
+        qWarning() << "Second start of glacier dialler";
+        QCoreApplication::quit();
     }
 
-    Rectangle {
-        anchors.bottom: parent.bottom
-        anchors.left: parent.left
-        anchors.right: parent.right
-        height: 2
-        color: "#c0c0c0"
+    QDBusConnection::sessionBus().registerService("org.nemomobile.qmlmessages");
+    if (!QDBusConnection::sessionBus().registerObject("/", m_window)) {
+        qWarning() << Q_FUNC_INFO << "Cannot register DBus object!";
     }
 }
 
+void DBusAdaptor::showGroupsWindow()
+{
+    m_window->raise();
+}
+
+void DBusAdaptor::showGroupsWindow(const QStringList& a)
+{
+    QMetaObject::invokeMethod(m_window, "startSMS", Q_ARG(QStringList, a));
+    m_window->raise();
+}
+
+void DBusAdaptor::startConversation(const QString& localUid, const QString& remoteUid, bool show)
+{
+    QMetaObject::invokeMethod(m_window, "showConversation", Q_ARG(QVariant, localUid), Q_ARG(QVariant, remoteUid));
+    if (show) {
+        m_window->raise();
+    }
+}
+
+void DBusAdaptor::startSMS(const QString& phoneNumber)
+{
+    QMetaObject::invokeMethod(m_window, "startSMS", Q_ARG(QVariant, phoneNumber));
+    m_window->raise();
+}

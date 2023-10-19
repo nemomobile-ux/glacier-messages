@@ -1,4 +1,4 @@
-/* Copyright (C) 2018 Chupligin Sergey <neochapay@gmail.com>
+/* Copyright (C) 2018-2023 Chupligin Sergey <neochapay@gmail.com>
  * Copyright (C) 2012 John Brooks <john.brooks@dereferenced.net>
  * Copyright (C) 2011 Robin Burchell <robin+mer@viroteck.net>
  *
@@ -40,6 +40,8 @@
 
 #include <glacierapp.h>
 
+#include "dbusadaptor.h"
+
 Q_DECL_EXPORT int main(int argc, char** argv)
 {
     QGuiApplication* app = GlacierApp::app(argc, argv);
@@ -49,5 +51,6 @@ Q_DECL_EXPORT int main(int argc, char** argv)
     window->setTitle(QObject::tr("Messages"));
     window->setIcon(QIcon("/usr/share/glacier-messages/glacier-messages.png"));
 
+    DBusAdaptor* adaptor = new DBusAdaptor(window);
     return app->exec();
 }

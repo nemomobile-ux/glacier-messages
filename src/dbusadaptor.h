@@ -1,5 +1,4 @@
-/* Copyright (C) 2018 Chupligin Sergey <neochapay@gmail.com>
- * Copyright (C) 2012 John Brooks <john.brooks@dereferenced.net>
+/* Copyright (C) 2023 Chupligin Sergey <neochapay@gmail.com>
  *
  * You may use this file under the terms of the BSD license as follows:
  *
@@ -28,57 +27,30 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-import QtQuick
-import QtQuick.Controls
 
-import Nemo
-import Nemo.Controls
+#ifndef DBUSADAPTOR_H
+#define DBUSADAPTOR_H
 
-Item {
-    id: targetEdirBox
-    height: targetInput.height + 22
+#include <QDBusAbstractAdaptor>
+#include <QObject>
+#include <QQuickWindow>
 
-    property alias text: targetInput.text
+class DBusAdaptor : public QDBusAbstractAdaptor {
+    Q_OBJECT
+    Q_CLASSINFO("D-Bus Interface", "org.nemomobile.qmlmessages")
 
-    TextField {
-        id: targetInput
-        placeholderText: "To:"
-        focus: true
-        anchors{
-            left: parent.left
-            margins: 10
-        }
-        width: targetEdirBox.width-addNewButton.width-targetEdirBox.height*0.2
-    }
-    
-    Image{
-        id: addNewButton
-        width: targetEdirBox.height*0.8
-        height: width
+public:
+    explicit DBusAdaptor(QQuickWindow* window);
 
-        source: "image://theme/plus-circle"
+public slots:
+    void showGroupsWindow();
+    void showGroupsWindow(const QStringList& a);
 
-        anchors{
-            top: targetEdirBox.top
-            topMargin: targetEdirBox.height*0.1
-            right: targetEdirBox.right
-            rightMargin: targetEdirBox.height*0.1
-        }
+    void startConversation(const QString& localUid, const QString& remoteUid, bool show);
+    void startSMS(const QString& phoneNumber);
 
-        MouseArea{
-            anchors.fill: parent
-            onClicked: {
-                console.log("Open select contacts dialog")
-            }
-        }
-    }
+private:
+    QQuickWindow* m_window;
+};
 
-    Rectangle {
-        anchors.bottom: parent.bottom
-        anchors.left: parent.left
-        anchors.right: parent.right
-        height: 2
-        color: "#c0c0c0"
-    }
-}
-
+#endif // DBUSADAPTOR_H

@@ -1,5 +1,4 @@
-/* Copyright (C) 2018 Chupligin Sergey <neochapay@gmail.com>
- * Copyright (C) 2012 John Brooks <john.brooks@dereferenced.net>
+/* Copyright (C) 2023 Chupligin Sergey <neochapay@gmail.com>
  *
  * You may use this file under the terms of the BSD license as follows:
  *
@@ -28,57 +27,35 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-import QtQuick
-import QtQuick.Controls
 
-import Nemo
-import Nemo.Controls
+#ifndef MESSAGESHANDLER_H
+#define MESSAGESHANDLER_H
 
-Item {
-    id: targetEdirBox
-    height: targetInput.height + 22
+#include <QObject>
+#include <qofono-qt6/qofonomanager.h>
+#include <qofono-qt6/qofonomessagemanager.h>
 
-    property alias text: targetInput.text
+#include <CommHistory/event.h>
+#include <CommHistory/eventmodel.h>
+#include <CommHistory/group.h>
+#include <CommHistory/groupmodel.h>
 
-    TextField {
-        id: targetInput
-        placeholderText: "To:"
-        focus: true
-        anchors{
-            left: parent.left
-            margins: 10
-        }
-        width: targetEdirBox.width-addNewButton.width-targetEdirBox.height*0.2
-    }
-    
-    Image{
-        id: addNewButton
-        width: targetEdirBox.height*0.8
-        height: width
+class MessagesHandler : public QObject {
+    Q_OBJECT
+public:
+    explicit MessagesHandler(QObject* parent = nullptr);
 
-        source: "image://theme/plus-circle"
+private slots:
+    void onModemsChanged(const QStringList& modems);
+    void onIncomingMessage(const QString& message, const QVariantMap& info);
 
-        anchors{
-            top: targetEdirBox.top
-            topMargin: targetEdirBox.height*0.1
-            right: targetEdirBox.right
-            rightMargin: targetEdirBox.height*0.1
-        }
+private:
+    int getGroupId(QString sender);
 
-        MouseArea{
-            anchors.fill: parent
-            onClicked: {
-                console.log("Open select contacts dialog")
-            }
-        }
-    }
+    QOfonoManager* m_ofonoManager;
+    QList<QOfonoMessageManager*> m_messageManagers;
+    CommHistory::EventModel* m_commhistoryEventModel;
+    CommHistory::GroupModel* m_groupModel;
+};
 
-    Rectangle {
-        anchors.bottom: parent.bottom
-        anchors.left: parent.left
-        anchors.right: parent.right
-        height: 2
-        color: "#c0c0c0"
-    }
-}
-
+#endif // MESSAGESHANDLER_H

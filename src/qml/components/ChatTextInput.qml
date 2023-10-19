@@ -30,13 +30,11 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import QtQuick 2.6
+import QtQuick
+import QtQuick.Controls
 
-import QtQuick.Controls 1.0
-import QtQuick.Controls.Nemo 1.0
-import QtQuick.Controls.Styles.Nemo 1.0
-
-import QtQuick.Controls.Styles 1.4
+import Nemo
+import Nemo.Controls
 
 Item {
     id: textArea
@@ -86,14 +84,14 @@ Item {
                 visible: (!textInput.focus && !inputFocusScope.focus) || textInput.text.lenght == 0
             }
 
-            style: TextAreaStyle {
+            /*style: TextAreaStyle {
                 backgroundColor: Theme.fillDarkColor
                 font.pixelSize: Theme.fontSizeMedium
                 font.family: Theme.fontFamily
                 textColor: Theme.textColor
                 selectedTextColor: Theme.textColor
                 selectionColor: Theme.accentColor
-            }
+            }*/
         }
     }
 
