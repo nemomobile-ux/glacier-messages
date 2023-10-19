@@ -40,8 +40,6 @@ MessagesHandler::MessagesHandler(QObject* parent)
     , m_commhistoryEventModel(new CommHistory::EventModel(this))
     , m_groupModel(new CommHistory::GroupModel(this))
 {
-    qDebug() << Q_FUNC_INFO;
-
     m_groupModel->setResolveContacts(CommHistory::GroupManager::DoNotResolve);
     if (!m_groupModel->getGroups()) {
         qFatal() << "Can't load CommHistory::GroupModel";
