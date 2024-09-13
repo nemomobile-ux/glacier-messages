@@ -6,8 +6,8 @@ set(SRC
 set(HEADERS
     dbusadaptor.h)
 
-if(!QML_DEBUG)
-qt_add_resources(RESOURCES qml/glacier-messages.qrc)
+if(NOT QML_DEBUG)
+    qt_add_resources(RESOURCES qml/glacier-messages.qrc)
 endif()
 
 add_executable(glacier-messages ${SRC} ${HEADERS} ${RESOURCES})
@@ -23,6 +23,6 @@ install(TARGETS glacier-messages RUNTIME
 	DESTINATION ${CMAKE_INSTALL_BINDIR})
 
 if(QML_DEBUG)
-install(DIRECTORY qml
-        DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/glacier-messages)
+    install(DIRECTORY qml
+            DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/glacier-messages)
 endif()

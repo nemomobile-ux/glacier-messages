@@ -4,7 +4,6 @@
         <file>components/ConversationListDelegate.qml</file>
         <file>components/ChatTextInput.qml</file>
         <file>components/TargetEditBox.qml</file>
-        <file>components/MessagesService.qml</file>
         <file>components/ConversationListWidget.qml</file>
         <file>components/CommHistoryService.qml</file>
         <file>pages/ConversationListPage.qml</file>
